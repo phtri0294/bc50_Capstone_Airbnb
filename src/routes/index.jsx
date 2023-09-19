@@ -59,7 +59,7 @@ const routes = [
     element: lazy(() => import('../pages/AdminTemplate/AuthPage')),
   },
   {
-    path: '/register',
+    path: 'register',
     element: lazy(() => import('../pages/AdminTemplate/RegisterPage')),
   },
   // {
