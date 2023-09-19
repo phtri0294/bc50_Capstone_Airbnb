@@ -1,10 +1,10 @@
 import React from 'react'
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Footer from './_components/Footer';
 import Sidebar from './_components/Sidebar';
 import Topbar from './_components/Topbar';
 
-const AdminTemplate = () => {
+export default function AdminTemplate() {
     return (
         <div className='flex w-screen h-screen'>
             {/* Sidebar */}
@@ -23,7 +23,7 @@ const AdminTemplate = () => {
                 </div>
 
                 {/* Footer */}
-                <div className='sticky-footer bg-white'>
+                <div className='sticky-footer bg-gray-400 text-gray-900 py-3'>
                     <div className='container my-auto'>
                         <Footer />
                     </div>
@@ -33,5 +33,3 @@ const AdminTemplate = () => {
         </div>
     );
 };
-
-export default AdminTemplate;
