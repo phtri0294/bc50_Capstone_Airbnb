@@ -56,7 +56,6 @@ const AddUser = () => {
                         THÊM NGƯỜI MỚI
                     </div>
                     <hr className='h-divider mb-4' />
-
                     <Form.Item
                         label='Kích thước chữ'
                         name='size'
@@ -113,10 +112,11 @@ const AddUser = () => {
                         />
                     </Form.Item>
 
+                    {/* Api null */}
                     <Form.Item
                         label='Điện Thoại'
                         name='phone'
-                        // rules={[{ required: true, message: 'Vui lòng nhập số điện thoại' }]}
+                        rules={[{ required: true, message: 'Vui lòng nhập số điện thoại' }]}
                     >
                         <Input
                             name='phone'
@@ -127,7 +127,7 @@ const AddUser = () => {
                     <Form.Item
                         label='Ngày sinh'
                         name='birthday'
-                        // rules={[{ required: true, message: 'Vui lòng nhập ngày sinh' }]}
+                        rules={[{ required: true, message: 'Vui lòng nhập ngày sinh' }]}
                     >
                         <Input
                             name='birthday'
