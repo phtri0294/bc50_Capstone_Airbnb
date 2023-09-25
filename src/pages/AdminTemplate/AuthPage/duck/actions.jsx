@@ -15,30 +15,23 @@ const actAuth = (user, navigate) => {
         if (result.data.statusCode === 200) {
           const previousRoute = localStorage.getItem("previousRoute");
           const user = result.data.content;
-          if (user.maLoaiNguoiDung === "ADMIN") {
-            if (previousRoute) {
-              dispatch(actAuthSuccess(user));
-              localStorage.setItem("UserADMIN", JSON.stringify(user));
-              localStorage.removeItem("previousRoute");
-              navigate(previousRoute, { replace: true });
-            } else {
-              dispatch(actAuthSuccess(user));
-              localStorage.setItem("UserADMIN", JSON.stringify(user));
-              navigate("/admin", { replace: true });
-            }
-          } else {
-            if (previousRoute) {
-              dispatch(actAuthSuccess(user));
-              localStorage.setItem("UserUSER", JSON.stringify(user));
-              localStorage.removeItem("previousRoute");
-              navigate(previousRoute, { replace: true });
-            } else {
-              dispatch(actAuthSuccess(user));
-              localStorage.setItem("UserUSER", JSON.stringify(user));
-              navigate("/", { replace: true });
-            }
+          let localStorageKey = "LOGIN_USER";
+          let redirectRoute = "/";
+          if (user.user.role === 'ADMIN') {
+            localStorageKey = "LOGIN_ADMIN";
+            redirectRoute = "/admin";
           }
-        }
+
+          if (previousRoute) {
+            localStorage.removeItem("previousRoute");
+            navigate(previousRoute, { replace: true });
+          } else {
+            navigate(redirectRoute, { replace: true });
+          }
+
+          localStorage.setItem(localStorageKey, JSON.stringify(user));
+          dispatch(actAuthSuccess(user));
+        };
       })
       .catch((error) => {
         dispatch(actAuthFail(error.response.data.content));
@@ -47,11 +40,11 @@ const actAuth = (user, navigate) => {
 };
 
 const actLogout = (navigate) => {
-  if (localStorage.getItem("UserADMIN")) {
-    localStorage.removeItem("UserADMIN");
+  if (localStorage.getItem("LOGIN_ADMIN")) {
+    localStorage.removeItem("LOGIN_ADMIN");
     navigate("/auth", { replace: true });
-  } else if (localStorage.getItem("UserUSER")) {
-    localStorage.removeItem("UserUSER");
+  } else if (localStorage.getItem("LOGIN_USER")) {
+    localStorage.removeItem("LOGIN_USER");
     navigate("/", { replace: true });
   }
   return {

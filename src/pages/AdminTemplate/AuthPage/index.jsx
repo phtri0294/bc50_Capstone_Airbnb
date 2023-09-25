@@ -9,8 +9,8 @@ export default function AuthPage() {
     const error = useSelector((state) => state.authReducer.error);
 
     const [state, setState] = useState({
-        taiKhoan: '',
-        matKhau: '',
+        email: '',
+        password: '',
     });
 
     const handleOnchange = (e) => {
@@ -34,9 +34,9 @@ export default function AuthPage() {
         );
     };
 
-    if (localStorage.getItem('UserAdmin')) {
+    if (localStorage.getItem('LOGIN_ADMIN')) {
         return <Navigate replace to='/admin' />
-    }
+    };
 
     return (
         <div className="background-container">
@@ -112,5 +112,5 @@ export default function AuthPage() {
             </div >
 
         </div>
-    )
-}
+    );
+};
