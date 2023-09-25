@@ -14,6 +14,17 @@ import {
   uploadUserImgReducer,
 } from './../pages/AdminTemplate/User/EditUser/duck/reducer';
 
+import {
+  manageBookRoomReducer,
+  deleteBookRoomReducer,
+} from './../pages/AdminTemplate/BookRoom/duck/reducer';
+
+import {
+  updateBookRoomReducer,
+  detailBookRoomReducer,
+  uploadBookRoomImgReducer,
+} from './../pages/AdminTemplate/BookRoom/EditBookRoom/duck/reducer';
+
 const rootReducer = combineReducers({
   authReducer,
   registerReducer,
@@ -24,6 +35,13 @@ const rootReducer = combineReducers({
   detailUserReducer,
   updateUserReducer,
   uploadUserImgReducer,
+
+  manageBookRoomReducer,
+  deleteBookRoomReducer,
+  
+  updateBookRoomReducer,
+  detailBookRoomReducer,
+  uploadBookRoomImgReducer,
 });
 
 export default rootReducer;
