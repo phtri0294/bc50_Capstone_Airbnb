@@ -2,10 +2,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 export default function Topbar() {
-  const userAdmin = JSON.parse(localStorage.getItem('UserUSER'));
+  const userAdmin = JSON.parse(localStorage.getItem('LOGIN_ADMIN'));
 
   const handleLogout = () => {
-    localStorage.removeItem('UserUSER');
+    localStorage.removeItem('LOGIN_ADMIN');
   };
 
   return (
@@ -17,13 +17,6 @@ export default function Topbar() {
       >
         <i className='fa fa-bars' />
       </button>
-
-      <div className='bg-white'>
-        {/* ... */}
-        <div className='flex items-center justify-start'>
-        </div>
-        {/* ... */}
-      </div>
 
       {/* Topbar Navbar */}
       <ul className='navbar-nav ml-auto'>
