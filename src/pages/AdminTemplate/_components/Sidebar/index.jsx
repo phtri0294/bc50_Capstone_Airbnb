@@ -15,7 +15,7 @@ export default function Sidebar() {
   const items = [
     getItem(
       <Fragment >
-        Quản ký người dùng
+        Quản lý người dùng
       </Fragment>,
       '1',
       [
@@ -24,11 +24,11 @@ export default function Sidebar() {
       ]
     ),
 
-    getItem(<hr className='sidebar-divider my-0' />),
+    getItem(<hr className='sidebar-divider d-none d-md-block my-auto' />),
 
     getItem(
       <Fragment>
-        Quản ký thông tin phòng
+        Quản lý phòng
       </Fragment>,
       '2',
       [
@@ -37,11 +37,11 @@ export default function Sidebar() {
       ]
     ),
 
-    getItem(<hr className='sidebar-divider my-0' />),
+    getItem(<hr className='sidebar-divider d-none d-md-block my-auto' />),
 
     getItem(
       <Fragment>
-        Quản ký thông tin vị trí
+        Quản lý vị trí
       </Fragment>,
       '3',
       [
@@ -49,34 +49,47 @@ export default function Sidebar() {
         getItem(<NavLink to={'/admin/add-location'}>Thêm mới</NavLink>, 'add-location'),
       ]
     ),
+
+    getItem(<hr className='sidebar-divider d-none d-md-block my-auto' />),
+
+    getItem(
+      <Fragment>
+        Quản lý đặt phòng
+      </Fragment>,
+      '4',
+      [
+        getItem(<NavLink to={'/admin/book-room'}>Danh sách</NavLink>, 'book-room'),
+        getItem(<NavLink to={'/admin/add-book-room'}>Thêm mới</NavLink>, 'add-bookroom'),
+      ]
+    ),
   ];
 
   return (
     <ul
       className={
-        'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion py-1 space-y-1' +
+        'navbar-nav bg-gradient-primary sidebar sidebar-dark accordion' +
         (isToggled ? ' toggled' : '')
       }
       id='accordionSidebar'
     >
       {/* Sidebar - Brand */}
-      <div className='logo-container text-center logo-test py-1'>
+      <div className='logo-container'>
         <img
-          className='logo w-full mx-auto'
+          className='logo mx-auto'
           src='https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg'
           alt='Logo'
         />
       </div>
 
-      <hr className='sidebar-divider mb-3' />
+      <hr className='sidebar-divider mb-1' />
 
       {/* Nav Item - Dashboard */}
       <h5
-        className='custom-dashboard mb-2'
+        className='custom-dashboard mb-1'
       >
         DASHBOARD
       </h5>
-      <hr className='sidebar-divider mb-3' />
+      <hr className='sidebar-divider mb-1' />
 
       {items.map((item, index) => (
         <li key={item.key} className='nav-item'>
@@ -105,7 +118,7 @@ export default function Sidebar() {
                 aria-labelledby={`heading${item.key}`}
                 data-parent='#accordionSidebar'
               >
-                <div className='bg-white py-2 collapse-inner rounded'>
+                <div className='bg-white collapse-inner rounded'>
                   {item.children.map(childItem => (
                     <NavLink
                       key={childItem.key}
