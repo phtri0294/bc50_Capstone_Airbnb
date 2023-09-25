@@ -58,28 +58,29 @@ const EditUser = () => {
       <hr className='h-divider mb-4' />
 
       <div className='flex flex-wrap justify-center'>
-        {/* Left <Side></Side> */}
+        {/* Left Side */}
         <div className='w-full md:w-1/3 border'>
 
           <div className='w-full border rounded-lg px-3 pt-2'>
             <Form.Item
-              className='ml-5'
+              className=''
             >
               <img
                 style={{ width: 170, height: 170 }}
-                className='mx-auto rounded-full'
+                className='mx-auto rounded-full '
                 src={imgSrc !== '' ? imgSrc : 'https://a0.muscache.com/defaults/user_pic-50x50.png?v=3'}
                 alt='...'
               />
               <br />
               <input
                 type='file'
+                className='ml-5'
                 onChange={handleChangeFile}
                 accept='image/png, image/jpeg,image/gif,image/png'
               />
               <button
                 type='submit'
-                className='button-submit-edit mt-2'
+                className='button-submit-edit mt-2 ml-5'
                 onClick={() => {
                   if (formData) {
                     dispatch(actUploadUserImg(formData));

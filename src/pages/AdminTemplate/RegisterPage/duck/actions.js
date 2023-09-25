@@ -8,7 +8,7 @@ import api from 'utils/apiUtil';
 const actRegister = (formData, navigate) => {
   return (dispatch) => {
     dispatch(actRegisterRequest());
-    api.post('QuanLyNguoiDung/DangKy', formData)
+    api.post('auth/signup', formData)
       .then((result) => {
         if (result.data.statusCode === 200) {
           const user = result.data.content;

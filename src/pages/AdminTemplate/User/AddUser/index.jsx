@@ -6,7 +6,6 @@ import {
     Input,
     Select,
     Radio,
-    DatePicker
 } from 'antd';
 import { Formik } from 'formik';
 import { actAddNewUser } from './duck/actions';
