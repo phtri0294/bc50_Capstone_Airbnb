@@ -52,6 +52,18 @@ const routes = [
         path: 'edit-location/:id',
         element: lazy(() => import('../pages/AdminTemplate/Location/EditLocation/')),
       },
+      {
+        path: 'book-room',
+        element: lazy(() => import('../pages/AdminTemplate/BookRoom')),
+      },
+      {
+        path: 'add-book-room',
+        element: lazy(() => import('../pages/AdminTemplate/BookRoom/AddBookRoom/')),
+      },
+      {
+        path: 'edit-book-room/:id',
+        element: lazy(() => import('../pages/AdminTemplate/BookRoom/EditBookRoom/')),
+      },
     ],
   },
   {
