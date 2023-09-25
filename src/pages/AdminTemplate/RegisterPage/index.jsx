@@ -1,12 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, NavLink } from 'react-router-dom';
-// import { Formik, useFormik } from 'formik';
 import { Formik } from 'formik';
 import {
     Form,
     Input,
-    Select,
 } from 'antd';
 import { actRegister } from './duck/actions';
 
@@ -32,8 +30,6 @@ export default function Register() {
     };
 
     const onSubmitForm = (formData) => {
-        console.log(formData);
-        console.log(formData.name);
         dispatch(actRegister(formData, navigate));
     };
 
@@ -207,8 +203,6 @@ export default function Register() {
 
                     </Formik>
                 </article >
-
-
             </div>
         </div>
     );
