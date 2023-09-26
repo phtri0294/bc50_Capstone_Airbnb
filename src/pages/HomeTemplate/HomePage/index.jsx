@@ -1,9 +1,10 @@
 import React from 'react'
+import ListRoom from './ListRoom'
 
-export default function Homepage() {
+export default function HomePage() {
     return (
         <div>
-            <h1>This is HOMEPAGE</h1>
+            <ListRoom />
         </div>
     )
 }

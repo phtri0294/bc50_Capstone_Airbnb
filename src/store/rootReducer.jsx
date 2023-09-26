@@ -47,6 +47,8 @@ import {
   uploadLocationImgReducer,
 } from './../pages/AdminTemplate/Location/EditLocation/duck/reducer';
 
+import HometemplateManageRoomReducer from './../pages/HomeTemplate/HomePage/ListRoom/duck/reducer';
+
 const rootReducer = combineReducers({
   authReducer,
   registerReducer,
@@ -60,7 +62,7 @@ const rootReducer = combineReducers({
 
   manageBookRoomReducer,
   deleteBookRoomReducer,
-  
+
   updateBookRoomReducer,
   detailBookRoomReducer,
   uploadBookRoomImgReducer,
@@ -78,6 +80,8 @@ const rootReducer = combineReducers({
   detailLocationReducer,
   updateLocationReducer,
   uploadLocationImgReducer,
+
+  HometemplateManageRoomReducer,
 });
 
 export default rootReducer;
