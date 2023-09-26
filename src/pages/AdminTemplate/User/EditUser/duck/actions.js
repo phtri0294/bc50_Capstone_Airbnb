@@ -88,19 +88,19 @@ const actUploadImgFail = (error) => {
 
 const actDetailUser = (id) => {
     return (dispatch) => {
-      dispatch(actDetailRequest());
-      api.get(`users/${id}`)
-        .then((result) => {
-          if (result.data.statusCode === 200) {
-            dispatch(actDetailSuccess(result.data.content));
-          }
-        })
-        .catch((error) => {
-          dispatch(actDetailFail(error));
-        });
+        dispatch(actDetailRequest());
+        api.get(`users/${id}`)
+            .then((result) => {
+                if (result.data.statusCode === 200) {
+                    dispatch(actDetailSuccess(result.data.content));
+                }
+            })
+            .catch((error) => {
+                dispatch(actDetailFail(error));
+            });
     };
-  };
-  
+};
+
 const actDetailRequest = () => {
     return {
         type: DETAIL_USER_REQUEST,
