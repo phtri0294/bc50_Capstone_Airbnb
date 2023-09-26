@@ -25,6 +25,17 @@ import {
   uploadBookRoomImgReducer,
 } from './../pages/AdminTemplate/BookRoom/EditBookRoom/duck/reducer';
 
+import {
+  manageRoomReducer,
+  deleteRoomReducer,
+} from './../pages/AdminTemplate/Room/duck/reducer';
+
+import {
+  updateRoomReducer,
+  detailRoomReducer,
+  uploadRoomImgReducer,
+} from './../pages/AdminTemplate/Room/EditRoom/duck/reducer';
+
 const rootReducer = combineReducers({
   authReducer,
   registerReducer,
@@ -42,6 +53,13 @@ const rootReducer = combineReducers({
   updateBookRoomReducer,
   detailBookRoomReducer,
   uploadBookRoomImgReducer,
+
+  manageRoomReducer,
+  deleteRoomReducer,
+
+  detailRoomReducer,
+  updateRoomReducer,
+  uploadRoomImgReducer,
 });
 
 export default rootReducer;
