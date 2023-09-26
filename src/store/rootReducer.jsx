@@ -36,6 +36,17 @@ import {
   uploadRoomImgReducer,
 } from './../pages/AdminTemplate/Room/EditRoom/duck/reducer';
 
+import {
+  manageLocationReducer,
+  deleteLocationReducer,
+} from './../pages/AdminTemplate/Location/duck/reducer';
+
+import {
+  updateLocationReducer,
+  detailLocationReducer,
+  uploadLocationImgReducer,
+} from './../pages/AdminTemplate/Location/EditLocation/duck/reducer';
+
 const rootReducer = combineReducers({
   authReducer,
   registerReducer,
@@ -60,6 +71,13 @@ const rootReducer = combineReducers({
   detailRoomReducer,
   updateRoomReducer,
   uploadRoomImgReducer,
+
+  manageLocationReducer,
+  deleteLocationReducer,
+
+  detailLocationReducer,
+  updateLocationReducer,
+  uploadLocationImgReducer,
 });
 
 export default rootReducer;
