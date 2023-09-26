@@ -5,7 +5,6 @@ import {
     UPDATE_USER_IMG_REQUEST,
     UPDATE_USER_IMG_SUCCESS,
     UPDATE_USER_IMG_FAIL,
-    // SET_USER_DETAIL,
     DETAIL_USER_REQUEST,
     DETAIL_USER_SUCCESS,
     DETAIL_USER_FAIL,
@@ -49,11 +48,6 @@ const actUpdateFail = (error) => {
         payload: error,
     };
 };
-
-// const actDetailUser = (id) => ({
-//     type: SET_USER_DETAIL,
-//     payload: id,
-// });
 
 const actUploadUserImg = (formData) => {
     return (dispatch) => {

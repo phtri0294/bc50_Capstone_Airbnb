@@ -8,11 +8,7 @@ import {
   deleteUserReducer,
 } from './../pages/AdminTemplate/User/duck/reducer';
 
-import {
-  updateUserReducer,
-  detailUserReducer,
-  uploadUserImgReducer,
-} from './../pages/AdminTemplate/User/EditUser/duck/reducer';
+import detailUserReducer from './../pages/AdminTemplate/User/EditUser/duck/reducer';
 
 import {
   manageBookRoomReducer,
