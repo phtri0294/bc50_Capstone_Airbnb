@@ -19,7 +19,6 @@ export default function ManageUser() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const dataUser = useSelector((state) => state.manageUserReducer.data);
-  const userDetail = useSelector((state) => state.detailUserReducer.data);
   const { Search } = Input;
 
   useEffect(() => {
