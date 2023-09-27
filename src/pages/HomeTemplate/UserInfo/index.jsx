@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { actUpdateUser, actDetailUser, actUploadUserImg } from './duck/actions';
+import { actDetailBookRoom } from './UserBookRoom/duck/actions';
 
 export default function UserInfo() {
   const dispatch = useDispatch();
@@ -32,10 +33,9 @@ export default function UserInfo() {
     console.log('field', field)
   };
 
-  const getDataFromLocalStorage = (storageKey) => {
+  const getUserDataFromLocalStorage = (storageKey) => {
     try {
       const storedData = localStorage.getItem(storageKey);
-
       if (storedData) {
         return JSON.parse(storedData);
       }
@@ -47,25 +47,20 @@ export default function UserInfo() {
 
   const LOGIN_USER_KEY = 'LOGIN_USER';
   const LOGIN_ADMIN_KEY = 'LOGIN_ADMIN';
-  let user;
 
-  const userType = 'admin';
+  const userAdmin = getUserDataFromLocalStorage(LOGIN_ADMIN_KEY);
+  const userUser = getUserDataFromLocalStorage(LOGIN_USER_KEY);
 
-  if (userType === 'user') {
-    user = getDataFromLocalStorage(LOGIN_USER_KEY);
-  } else if (userType === 'admin') {
-    user = getDataFromLocalStorage(LOGIN_ADMIN_KEY);
-  } else {
-    console.error('Invalid user type.');
-  }
+  const loggedInUser = userAdmin || userUser;
+  const userId = loggedInUser ? loggedInUser.user.id : null;
 
-  let userId = user.user.id;
   useEffect(() => {
-    dispatch(actDetailUser(userId));
-  }, [dispatch], userId);
+    if (userId) {
+      dispatch(actDetailUser(userId));
+    }
+  }, [dispatch, userId]);
 
   const userDetail = useSelector(state => state.HomeTemplateDetailUserReducer.data);
-
   const [imgSrc, setImgSrc] = useState(userDetail?.avatar || defaultImgSrc);
 
   useEffect(() => {
@@ -75,6 +70,10 @@ export default function UserInfo() {
       setImgSrc(defaultImgSrc);
     }
   }, [userDetail?.avatar, defaultImgSrc]);
+
+  const handleInfoBookRoom = async (userId) => {
+    dispatch(actDetailBookRoom(userId));
+  };
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -123,8 +122,6 @@ export default function UserInfo() {
     };
   };
 
-
-
   return (
     <Fragment>
       <div>
@@ -138,7 +135,10 @@ export default function UserInfo() {
             <div className='flex flex-row-reverse'>
               <span>
                 <i className='fas fa-arrow-right fa-md fa-fw mr-2 text-blue-500' />
-                <a href="/user-book-room">Xem đặt phòng</a></span>
+                <a 
+                href="/user-book-room"
+                onClick={() => handleInfoBookRoom(userId)}
+                >Xem đặt phòng</a></span>
             </div>
           </div>
           <hr className='h-divider mb-4' />

@@ -17,6 +17,7 @@ import detailLocationReducer from './../pages/AdminTemplate/Location/EditLocatio
 
 import HometemplateManageRoomReducer from './../pages/HomeTemplate/HomePage/ListRoom/duck/reducer';
 import HomeTemplateDetailUserReducer from './../pages/HomeTemplate/UserInfo/duck/reducer';
+import { HomeTemplateDetailBookRoomReducer, HomeTemplateDetailRoomReducer } from './../pages/HomeTemplate/UserInfo/UserBookRoom/duck/reducer';
 
 const rootReducer = combineReducers({
   authReducer,
@@ -37,6 +38,8 @@ const rootReducer = combineReducers({
 
   HometemplateManageRoomReducer,
   HomeTemplateDetailUserReducer,
+  HomeTemplateDetailBookRoomReducer,
+  HomeTemplateDetailRoomReducer
 });
 
 export default rootReducer;
