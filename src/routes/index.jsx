@@ -12,11 +12,11 @@ const routes = [
       },
       {
         path: 'user-info/:id',
-        element: lazy(() => import('../pages/HomeTemplate/User/UserInfo')),
+        element: lazy(() => import('../pages/HomeTemplate/UserInfo')),
       },
       {
         path: 'user-book-room/:id',
-        element: lazy(() => import('../pages/HomeTemplate/User/UserBookRoom/')),
+        element: lazy(() => import('../pages/HomeTemplate/UserInfo/UserBookRoom/')),
       },
     ],
   },

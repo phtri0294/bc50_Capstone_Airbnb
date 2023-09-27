@@ -16,7 +16,7 @@ import manageLocationReducer from './../pages/AdminTemplate/Location/duck/reduce
 import detailLocationReducer from './../pages/AdminTemplate/Location/EditLocation/duck/reducer';
 
 import HometemplateManageRoomReducer from './../pages/HomeTemplate/HomePage/ListRoom/duck/reducer';
-import HomeTemplateDetailUserReducer from './../pages/HomeTemplate/User/UserInfo/duck/reducer';
+import HomeTemplateDetailUserReducer from './../pages/HomeTemplate/UserInfo/duck/reducer';
 
 const rootReducer = combineReducers({
   authReducer,
