@@ -6,6 +6,9 @@ import registerReducer from './../pages/AdminTemplate/RegisterPage/duck/reducer'
 import manageUserReducer from './../pages/AdminTemplate/User/duck/reducer';
 import detailUserReducer from './../pages/AdminTemplate/User/EditUser/duck/reducer';
 
+import manageRoomReducer from './../pages/AdminTemplate/Room/duck/reducer';
+import detailRoomReducer from './../pages/AdminTemplate/Room/EditRoom/duck/reducer';
+
 import {
   manageBookRoomReducer,
   deleteBookRoomReducer,
@@ -16,17 +19,6 @@ import {
   detailBookRoomReducer,
   uploadBookRoomImgReducer,
 } from './../pages/AdminTemplate/BookRoom/EditBookRoom/duck/reducer';
-
-import {
-  manageRoomReducer,
-  deleteRoomReducer,
-} from './../pages/AdminTemplate/Room/duck/reducer';
-
-import {
-  updateRoomReducer,
-  detailRoomReducer,
-  uploadRoomImgReducer,
-} from './../pages/AdminTemplate/Room/EditRoom/duck/reducer';
 
 import {
   manageLocationReducer,
@@ -48,19 +40,15 @@ const rootReducer = combineReducers({
   manageUserReducer,
   detailUserReducer,
 
+  manageRoomReducer,
+  detailRoomReducer,
+
   manageBookRoomReducer,
   deleteBookRoomReducer,
 
   updateBookRoomReducer,
   detailBookRoomReducer,
   uploadBookRoomImgReducer,
-
-  manageRoomReducer,
-  deleteRoomReducer,
-
-  detailRoomReducer,
-  updateRoomReducer,
-  uploadRoomImgReducer,
 
   manageLocationReducer,
   deleteLocationReducer,

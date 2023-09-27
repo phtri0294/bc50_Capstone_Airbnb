@@ -5,12 +5,10 @@ import {
     Form,
     Input,
     Radio,
-    Switch,
     Select
 } from 'antd';
-import { useFormik, Formik } from 'formik';
+import { Formik } from 'formik';
 import actAddNewRoom from './duck/actions';
-
 
 export default function AddRoom() {
     const dispatch = useDispatch();
@@ -22,8 +20,6 @@ export default function AddRoom() {
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
     };
-
-    // const formik = useFormik({
     //     initialValues: {
     //         id: '',
     //         tenPhong: 0,
@@ -79,7 +75,7 @@ export default function AddRoom() {
     //     dispatch(actAddNewRoom(formData, navigate));
     // };
 
-    // const handleChangeSwitch = (fieldName, formik) => (value) => {
+    // const handleChangeselect = (fieldName, formik) => (value) => {
     //     formik.setFieldValue(fieldName, value);
     // };
 
@@ -140,161 +136,9 @@ export default function AddRoom() {
                         THÊM PHÒNG MỚI
                     </div>
                     <hr className='h-divider mb-4' />
-                    {/* <Form
-                // form={form}
-                layout='horizontal'
-                size={componentSize}
-                labelCol={{ span: 4, }}
-                wrapperCol={{ span: 14, }}
-                style={{ maxWidth: 1000, }}
-                // onFinish={onSubmitForm}
-                // onValuesChange={onFormLayoutChange}
-
-                onSubmitCapture={formik.handleSubmit}
-                onValuesChange={onFormLayoutChange}
-            > */}
                     <div className='w-full flex justify-stretch border'>
                         {/* Left Side */}
-                        <div className='w-full md:w-3/6 lg:w-3/6 border'>
-                            <div className='w-full border py-2 pl-5'>
-                                <Form.Item
-                                    name='hinhAnh'
-                                    className='grid justify-items-center'
-                                >
-                                    <img
-                                        style={{ width: 170, height: 170 }}
-                                        className='ml-5 rounded-full'
-                                        src={imgSrc !== '' ? imgSrc : 'https://a0.muscache.com/defaults/user_pic-50x50.png?v=3'}
-                                        alt='...'
-                                    />
-                                    <br />
-                                    <input
-                                        type='file'
-                                        className='ml-5'
-                                        // onChange={handleChangeFile}
-                                        accept='image/png, image/jpeg,image/gif,image/png'
-                                    />
-                                </Form.Item>
-                            </div>
-
-                            <div className='w-full '>
-                                <Form.Item
-                                    label='Máy giặt'
-                                    name='mayGiat'
-                                    className='custom-label-switch'
-                                >
-                                    <Select>
-
-                                        <Select.Option value='true'>Có</Select.Option>
-                                        <Select.Option value='false'>Không</Select.Option>
-                                    </Select>
-                                </Form.Item >
-
-                                <Form.Item
-                                    label='Bàn là'
-                                    name='banLa'
-                                    className='custom-label-switch'
-                                >
-                                    <Select>
-                                        <Select.Option value='true'>Có</Select.Option>
-                                        <Select.Option value='false'>Không</Select.Option>
-                                    </Select>
-                                </Form.Item>
-
-                                <Form.Item
-                                    label='Tivi'
-                                    name='tivi'
-                                    className='custom-label-switch'
-                                >
-                                    <Select>
-                                        <Select.Option value='true'>Có</Select.Option>
-                                        <Select.Option value='false'>Không</Select.Option>
-                                    </Select>
-                                </Form.Item>
-
-                                <Form.Item
-                                    label='Điều hòa'
-                                    name='dieuHoa'
-                                    className='custom-label-switch'
-                                >
-                                    <Select>
-                                        <Select.Option value='true'>Có</Select.Option>
-                                        <Select.Option value='false'>Không</Select.Option>
-                                    </Select>
-                                </Form.Item>
-
-                                <Form.Item
-                                    label='Wifi'
-                                    name='wifi'
-                                    className='custom-label-switch'
-                                >
-                                    <Select>
-                                        <Select.Option value='true'>Có</Select.Option>
-                                        <Select.Option value='false'>Không</Select.Option>
-                                    </Select>
-                                </Form.Item>
-
-                                <Form.Item
-                                    label='Bếp'
-                                    name='bep'
-                                    className='custom-label-switch'
-                                >
-                                    <Select>
-                                        <Select.Option value='true'>Có</Select.Option>
-                                        <Select.Option value='false'>Không</Select.Option>
-                                    </Select>
-                                </Form.Item>
-
-                                <Form.Item
-                                    label='Đỗ xe'
-                                    name='doXe'
-                                    className='custom-label-switch'
-                                >
-                                    <Select>
-                                        <Select.Option value='true'>Có</Select.Option>
-                                        <Select.Option value='false'>Không</Select.Option>
-                                    </Select>
-                                </Form.Item>
-
-                                <Form.Item
-                                    label='Hồ bơi'
-                                    name='hoBoi'
-                                    className='custom-label-switch'
-                                >
-                                    <Select>
-                                        <Select.Option value='true'>Có</Select.Option>
-                                        <Select.Option value='false'>Không</Select.Option>
-                                    </Select>
-                                </Form.Item>
-
-                                <Form.Item
-                                    label='Bàn ủi'
-                                    name='banUi'
-                                    className='custom-label-switch'
-                                >
-                                    <Select>
-                                        <Select.Option value='true'>Có</Select.Option>
-                                        <Select.Option value='false'>Không</Select.Option>
-                                    </Select>
-                                </Form.Item>
-                            </div>
-                        </div>
-
-                        {/* Right Side */}
-                        <div className='w-full md:w-4/6 lg:w-4/6 ml-5'>
-                            {/* <Form
-                        // form={form}
-                        layout='horizontal'
-                        size={componentSize}
-                        labelCol={{ span: 4, }}
-                        wrapperCol={{ span: 14, }}
-                        style={{ maxWidth: 1000, }}
-                        // onFinish={onSubmitForm}
-                        // onValuesChange={onFormLayoutChange}
-
-                        onSubmitCapture={formik.handleSubmit}
-                        onValuesChange={onFormLayoutChange}
-                    > */}
+                        <div className='w-full md:w-3/6 lg:w-3/6 pl-4 border'>
                             <Form.Item
                                 label='Cỡ chữ'
                                 name='size'
@@ -415,6 +259,110 @@ export default function AddRoom() {
                             {/* </Form> */}
                         </div>
 
+
+                        {/* Right Side */}
+                        <div className='w-full md:w-3/6 lg:w-3/6 border'>
+                            <h3 className='text-center mb-3'>Tiện ích</h3>
+                            <Form.Item
+                                label='Máy giặt'
+                                name='mayGiat'
+                                className='custom-label-select'
+                            >
+                                <Select>
+
+                                    <Select.Option value='true'>Có</Select.Option>
+                                    <Select.Option value='false'>Không</Select.Option>
+                                </Select>
+                            </Form.Item >
+
+                            <Form.Item
+                                label='Bàn là'
+                                name='banLa'
+                                className='custom-label-select'
+                            >
+                                <Select>
+                                    <Select.Option value='true'>Có</Select.Option>
+                                    <Select.Option value='false'>Không</Select.Option>
+                                </Select>
+                            </Form.Item>
+
+                            <Form.Item
+                                label='Tivi'
+                                name='tivi'
+                                className='custom-label-select'
+                            >
+                                <Select>
+                                    <Select.Option value='true'>Có</Select.Option>
+                                    <Select.Option value='false'>Không</Select.Option>
+                                </Select>
+                            </Form.Item>
+
+                            <Form.Item
+                                label='Điều hòa'
+                                name='dieuHoa'
+                                className='custom-label-select'
+                            >
+                                <Select>
+                                    <Select.Option value='true'>Có</Select.Option>
+                                    <Select.Option value='false'>Không</Select.Option>
+                                </Select>
+                            </Form.Item>
+
+                            <Form.Item
+                                label='Wifi'
+                                name='wifi'
+                                className='custom-label-select'
+                            >
+                                <Select>
+                                    <Select.Option value='true'>Có</Select.Option>
+                                    <Select.Option value='false'>Không</Select.Option>
+                                </Select>
+                            </Form.Item>
+
+                            <Form.Item
+                                label='Bếp'
+                                name='bep'
+                                className='custom-label-select'
+                            >
+                                <Select>
+                                    <Select.Option value='true'>Có</Select.Option>
+                                    <Select.Option value='false'>Không</Select.Option>
+                                </Select>
+                            </Form.Item>
+
+                            <Form.Item
+                                label='Đỗ xe'
+                                name='doXe'
+                                className='custom-label-select'
+                            >
+                                <Select>
+                                    <Select.Option value='true'>Có</Select.Option>
+                                    <Select.Option value='false'>Không</Select.Option>
+                                </Select>
+                            </Form.Item>
+
+                            <Form.Item
+                                label='Hồ bơi'
+                                name='hoBoi'
+                                className='custom-label-select'
+                            >
+                                <Select>
+                                    <Select.Option value='true'>Có</Select.Option>
+                                    <Select.Option value='false'>Không</Select.Option>
+                                </Select>
+                            </Form.Item>
+
+                            <Form.Item
+                                label='Bàn ủi'
+                                name='banUi'
+                                className='custom-label-select'
+                            >
+                                <Select>
+                                    <Select.Option value='true'>Có</Select.Option>
+                                    <Select.Option value='false'>Không</Select.Option>
+                                </Select>
+                            </Form.Item>
+                        </div>
                     </div>
                 </Form>
             </Formik>

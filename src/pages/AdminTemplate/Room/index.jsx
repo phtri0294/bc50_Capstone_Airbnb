@@ -1,11 +1,10 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Table, Input } from 'antd';
+import { Table } from 'antd';
 import {
     DeleteOutlined,
     EditOutlined,
-    SearchOutlined,
 } from '@ant-design/icons';
 import {
     actManageRoom,
@@ -19,7 +18,6 @@ export default function ManageRoom() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const dataRoom = useSelector((state) => state.manageRoomReducer.data);
-    const detailRoom = useSelector((state) => state.detailRoomReducer.data);
 
     useEffect(() => {
         dispatch(actManageRoom());
@@ -47,9 +45,9 @@ export default function ManageRoom() {
             title: 'Tên phòng',
             dataIndex: 'tenPhong',
             sorter: (a, b) => {
-                let nameA = a.name.toLowerCase().trim();
-                let nameB = b.name.toLowerCase().trim();
-                if (nameA > nameB) {
+                let tenPhongA = a.tenPhong.toLowerCase().trim();
+                let tenPhongB = b.tenPhong.toLowerCase().trim();
+                if (tenPhongA > tenPhongB) {
                     return 1;
                 }
                 return -1;
@@ -60,8 +58,8 @@ export default function ManageRoom() {
             title: 'Số khách',
             dataIndex: 'khach',
             sorter: (a, b) => {
-                let khachA = a.khach.toLowerCase().trim();
-                let khachB = b.khach.toLowerCase().trim();
+                let khachA = a.khach;
+                let khachB = b.khach;
                 if (khachA > khachB) {
                     return 1;
                 }
@@ -85,7 +83,6 @@ export default function ManageRoom() {
         {
             title: 'Hình ảnh',
             dataIndex: 'hinhAnh',
-
             width: '25%',
         },
         {

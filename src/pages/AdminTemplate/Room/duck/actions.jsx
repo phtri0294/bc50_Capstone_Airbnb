@@ -23,23 +23,6 @@ const actManageRoom = () => {
   };
 };
 
-const actSearchRoom = (searchTerm) => {
-  if (searchTerm.trim() != '') {
-    return (dispatch) => {
-      dispatch(actManageRoomRequest());
-      api.get(`QuanLyPhim/LayDanhSachPhim?maNhom=GP01&tenPhim=${searchTerm}`)
-        .then((result) => {
-          if (result.data.statusCode === 200) {
-            dispatch(actManageRoomSucess(result.data.content));
-          }
-        })
-        .catch((error) => {
-          dispatch(actManageRoomFail(error));
-        })
-    };
-  };
-};
-
 const actManageRoomRequest = () => {
   return {
     type: MANAGE_ROOM_REQUEST,
@@ -95,4 +78,4 @@ const actDeleteRoomFail = (error) => {
   };
 };
 
-export { actManageRoom, actSearchRoom, actDeleteRoom };
+export { actManageRoom, actDeleteRoom };
