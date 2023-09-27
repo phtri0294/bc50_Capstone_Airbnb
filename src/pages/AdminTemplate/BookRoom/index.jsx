@@ -18,21 +18,13 @@ export default function ManageBookRoom() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const dataBookRoom = useSelector((state) => state.manageBookRoomReducer.data);
-    const bookRoomDetail = useSelector((state) => state.detailBookRoomReducer.data);
 
     useEffect(() => {
         dispatch(actManageBookRoom());
     }, [dispatch]);
 
-    useEffect(() => {
-        if (bookRoomDetail) {
-            navigate('/admin/edit-book-room', { replace: true });
-        }
-    }, [bookRoomDetail, navigate]);
-
     const handleInfoEditBookRoom = async (id) => {
-        const bookRoom = dataBookRoom?.find((bookRoom) => bookRoom.id === id);
-        dispatch(actDetailBookRoom(bookRoom));
+        dispatch(actDetailBookRoom(id));
     };
 
     const columns = [
@@ -102,7 +94,7 @@ export default function ManageBookRoom() {
             width: '10%',
         },
         {
-            title: 'Mã người dùng',
+            title: 'Mã người đặt phòng',
             dataIndex: 'maNguoiDung',
             sorter: (a, b) => {
                 let maNguoiDungA = a.maNguoiDung;
@@ -112,7 +104,7 @@ export default function ManageBookRoom() {
                 }
                 return -1;
             },
-            width: '10%',
+            width: '15%',
         },
         {
             title: 'Thao Tác',
@@ -153,7 +145,7 @@ export default function ManageBookRoom() {
                         key={2}
                         className='ml-3 text-3xl'
                         onClick={() => {
-                            if (window.confirm('Bạn có chắc muốn xoá mã phòng này không: ' + item.maPhong + ' (ID: ' + item.id + ')')) {
+                            if (window.confirm('Bạn có chắc muốn xoá mã đặt phòng này không: ' + item.maPhong)) {
                                 dispatch(actDeleteBookRoom(item.id));
                                 dispatch(actManageBookRoom());
                             }

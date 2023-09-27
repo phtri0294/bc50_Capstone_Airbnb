@@ -7,53 +7,36 @@ import {
   DELETE_BOOK_ROOM_FAIL,
 } from './constants';
 import api from 'utils/apiUtil';
-//
+
 const actManageBookRoom = () => {
   return (dispatch) => {
-    dispatch(actManageBookRoomRequest());
+    dispatch(actManageRequest());
     api.get('dat-phong')
       .then((result) => {
         if (result.data.statusCode === 200) {
-          dispatch(actManageBookRoomSucess(result.data.content));
+          dispatch(actManageSucess(result.data.content));
         }
       })
       .catch((error) => {
-        dispatch(actManageBookRoomFail(error));
+        dispatch(actManageFail(error));
       })
   };
 };
 
-const actSearchBookRoom = (searchTerm) => {
-  if (searchTerm.trim() != '') {
-    return (dispatch) => {
-      dispatch(actManageBookRoomRequest());
-      api.get(`QuanLyPhim/LayDanhSachPhim?maNhom=GP01&tenPhim=${searchTerm}`)
-        .then((result) => {
-          if (result.data.statusCode === 200) {
-            dispatch(actManageBookRoomSucess(result.data.content));
-          }
-        })
-        .catch((error) => {
-          dispatch(actManageBookRoomFail(error));
-        })
-    };
-  };
-};
-
-const actManageBookRoomRequest = () => {
+const actManageRequest = () => {
   return {
     type: MANAGE_BOOK_ROOM_REQUEST,
   };
 };
 
-const actManageBookRoomSucess = (data) => {
+const actManageSucess = (data) => {
   return {
     type: MANAGE_BOOK_ROOM_SUCCESS,
     payload: data
   };
 };
 
-const actManageBookRoomFail = (error) => {
+const actManageFail = (error) => {
   return {
     type: MANAGE_BOOK_ROOM_FAIL,
     payload: error
@@ -62,37 +45,37 @@ const actManageBookRoomFail = (error) => {
 
 const actDeleteBookRoom = (id) => {
   return (dispatch) => {
-    dispatch(actDeleteBookRoomRequest());
+    dispatch(actDeleteRequest());
     api.delete(`dat-phong/${id}`)
       .then((result) => {
-        dispatch(actDeleteBookRoomSuccess(result.data.content));
-        alert('Bạn đã xóa căn phòng thành công!');
+        dispatch(actDeleteSuccess(result.data.content));
+        alert('Bạn đã xóa đặt phòng thành công!');
       })
       .catch((error) => {
-        dispatch(actDeleteBookRoomFail(error));
+        dispatch(actDeleteFail(error));
         alert(error.message);
       })
   };
 };
 
-const actDeleteBookRoomRequest = () => {
+const actDeleteRequest = () => {
   return {
     type: DELETE_BOOK_ROOM_REQUEST,
   };
 };
 
-const actDeleteBookRoomSuccess = (data) => {
+const actDeleteSuccess = (data) => {
   return {
     type: DELETE_BOOK_ROOM_SUCCESS,
     payload: data
   };
 };
 
-const actDeleteBookRoomFail = (error) => {
+const actDeleteFail = (error) => {
   return {
     type: DELETE_BOOK_ROOM_FAIL,
     payload: error
   };
 };
 
-export { actManageBookRoom, actSearchBookRoom, actDeleteBookRoom };
+export { actManageBookRoom, actDeleteBookRoom };

@@ -4,22 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     Form,
     Input,
-    Select,
 } from 'antd';
 import { useFormik } from 'formik';
-import { actUpdateBookRoom, actUploadBookRoomImg } from './duck/actions';
+import { actUpdateBookRoom } from './duck/actions';
 
 export default function EditRoom() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [componentSize, setComponentSize] = useState('default');
-    const [formData, setFormData] = useState(null);
-
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
     };
 
-    const bookRoomDetail = useSelector(state => state.detailBookRoomReducer.bookRoomDetail);
+    const bookRoomDetail = useSelector(state => state.detailBookRoomReducer.data);
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -52,7 +49,7 @@ export default function EditRoom() {
             >
                 <div
                     className='heading-page text-orange-800'>
-                    CHỈNH SỬA THÔNG TIN
+                    CHỈNH SỬA THÔNG TIN ĐẶT PHÒNG
                 </div>
                 <hr className='h-divider mb-4' />
                 <Form.Item

@@ -11,7 +11,7 @@ const actAddNewBookRoom = (formData, navigate) => {
         api.post('dat-phong', formData)
             .then((result) => {
                 dispatch(actAddNewSuccess(result.data.content));
-                alert('Bạn đã thêm phòng mới thành công!');
+                alert('Bạn đã thêm đặt phòng mới thành công!');
                 navigate("/admin/book-room", { replace: true });
             })
             .catch((error) => {

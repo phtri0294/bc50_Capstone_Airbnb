@@ -2,10 +2,9 @@ import {
     UPDATE_BOOK_ROOM_REQUEST,
     UPDATE_BOOK_ROOM_SUCCESS,
     UPDATE_BOOK_ROOM_FAIL,
-    UPDATE_BOOK_ROOMIMG_REQUEST,
-    UPDATE_BOOK_ROOMIMG_SUCCESS,
-    UPDATE_BOOK_ROOMIMG_FAIL,
-    SET_BOOK_ROOM_DETAIL,
+    DETAIL_BOOK_ROOM_REQUEST,
+    DETAIL_BOOK_ROOM_SUCCESS,
+    DETAIL_BOOK_ROOM_FAIL,
 } from './constants';
 import api from 'utils/apiUtil';
 
@@ -47,47 +46,41 @@ const actUpdateBookRoomFail = (error) => {
     };
 };
 
-const actDetailBookRoom = (id) => ({
-    type: SET_BOOK_ROOM_DETAIL,
-    payload: id,
-});
-
-const actUploadBookRoomImg = (formData) => {
+const actDetailBookRoom = (id) => {
     return (dispatch) => {
-        dispatch(actUploadBookRoomImgRequest());
-        api.post(`dat-phong/upload-hinh-phong`, formData)
+        dispatch(actDetailRequest());
+        api.get(`dat-phong/${id}`)
             .then((result) => {
                 if (result.data.statusCode === 200) {
-                    dispatch(actUploadBookRoomImgSuccess(result.data.content));
-                    alert('Cập nhật hình ảnh phòng thành công');
+                    dispatch(actDetailSuccess(result.data.content));
                 }
             })
             .catch((error) => {
-                dispatch(actUploadBookRoomImgFail(error));
-                alert(error.message);
+                dispatch(actDetailFail(error));
             });
     };
 };
 
-const actUploadBookRoomImgRequest = () => {
+const actDetailRequest = () => {
     return {
-        type: UPDATE_BOOK_ROOMIMG_REQUEST,
+        type: DETAIL_BOOK_ROOM_REQUEST,
     };
 };
 
-const actUploadBookRoomImgSuccess = (data) => {
+const actDetailSuccess = (data) => {
     return {
-        type: UPDATE_BOOK_ROOMIMG_SUCCESS,
+        type: DETAIL_BOOK_ROOM_SUCCESS,
         payload: data,
     };
 };
 
-const actUploadBookRoomImgFail = (error) => {
+const actDetailFail = (error) => {
     return {
-        type: UPDATE_BOOK_ROOMIMG_FAIL,
+        type: DETAIL_BOOK_ROOM_FAIL,
         payload: error,
     };
 };
 
-export { actUpdateBookRoom, actDetailBookRoom, actUploadBookRoomImg };
+
+export { actUpdateBookRoom, actDetailBookRoom };
 
