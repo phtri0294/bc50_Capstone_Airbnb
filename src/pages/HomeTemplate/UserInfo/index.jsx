@@ -7,7 +7,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { actUpdateUser, actUploadUserImg } from './duck/actions';
+import { actUpdateUser, actDetailUser, actUploadUserImg } from './duck/actions';
 
 export default function UserInfo() {
   const dispatch = useDispatch();
@@ -18,7 +18,54 @@ export default function UserInfo() {
     setComponentSize(size);
   };
 
-  const userDetail = useSelector(state => state.detailUserReducer.data);
+  const [isEditing, setIsEditing] = useState({
+    name: false,
+    email: false,
+    phone: false,
+    birthday: false,
+    gender: false,
+  });
+
+  const toggleEditing = (field) => {
+    setIsEditing({ ...isEditing, [field]: !isEditing[field] });
+    console.log('isEditing', isEditing)
+    console.log('field', field)
+  };
+
+  const getDataFromLocalStorage = (storageKey) => {
+    try {
+      const storedData = localStorage.getItem(storageKey);
+
+      if (storedData) {
+        return JSON.parse(storedData);
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const LOGIN_USER_KEY = 'LOGIN_USER';
+  const LOGIN_ADMIN_KEY = 'LOGIN_ADMIN';
+  let user;
+
+  const userType = 'admin';
+
+  if (userType === 'user') {
+    user = getDataFromLocalStorage(LOGIN_USER_KEY);
+  } else if (userType === 'admin') {
+    user = getDataFromLocalStorage(LOGIN_ADMIN_KEY);
+  } else {
+    console.error('Invalid user type.');
+  }
+
+  let userId = user.user.id;
+  useEffect(() => {
+    dispatch(actDetailUser(userId));
+  }, [dispatch], userId);
+
+  const userDetail = useSelector(state => state.HomeTemplateDetailUserReducer.data);
+
   const [imgSrc, setImgSrc] = useState(userDetail?.avatar || defaultImgSrc);
 
   useEffect(() => {
@@ -76,180 +123,281 @@ export default function UserInfo() {
     };
   };
 
+
+
   return (
     <Fragment>
-      <div
-        className='heading-page text-orange-800'>
-        CHỈNH SỬA THÔNG TIN NGƯỜI DÙNG
-      </div>
-      <hr className='h-divider mb-4' />
+      <div>
+        <div className="h-10" />
+        <div className='container mx-auto mt-20 top-32'>
+          <div className='grid grid-cols-3 items-center gap-2 ml-5'>
+            <div
+              className='text-orange-800 col-span-2 flex justify-center xs:ml-10 md:ml-40 lg:ml-80 font-bold text-xl'>
+              THÔNG TIN NGƯỜI DÙNG
+            </div>
+            <div className='flex flex-row-reverse'>
+              <span>
+                <i className='fas fa-arrow-right fa-md fa-fw mr-2 text-blue-500' />
+                <a href="/user-book-room">Xem đặt phòng</a></span>
+            </div>
+          </div>
+          <hr className='h-divider mb-4' />
 
-      <div className='flex flex-wrap justify-center'>
-        {/* Left Side */}
-        <div className='w-full md:w-1/3 border'>
-          <div className='w-full border px-3 pt-2'>
-            <Form
-              onSubmitCapture={formikImg.handleSubmit}
-              onValuesChange={onFormLayoutChange}
-            >
-              <Form.Item>
-                <img
-                  style={{ width: 170, height: 170 }}
-                  className='ml-5 rounded-full '
-                  src={imgSrc === '' ? userDetail?.avatar : imgSrc}
-                  alt='...'
-                />
-                <br />
-                <input
-                  type='file'
-                  className='ml-5'
-                  onChange={handleChangeFile}
-                  accept='image/png, image/jpeg, image/gif, image/png'
-                  name="formFile"
-                />
-                <button
-                  type='submit'
-                  className='button-submit-edit mt-2 ml-5'
+          <div className='flex flex-wrap justify-center'>
+            {/* Left Side */}
+            <div className='w-full md:w-1/3 border'>
+              <div className='w-full border px-3 pt-2'>
+                <Form
+                  onSubmitCapture={formikImg.handleSubmit}
+                  onValuesChange={onFormLayoutChange}
                 >
-                  Cập nhật ảnh
+                  <Form.Item
+                    className='text-center'
+                  >
+                    <img
+                      style={{ width: 170, height: 170 }}
+                      className='ml-20 rounded-full '
+                      src={imgSrc === '' ? userDetail?.avatar : imgSrc}
+                      alt='...'
+                    />
+                    <br />
+                    {/* <div className='items-center'> */}
+                    <input
+                      type='file'
+                      className='ml-20'
+                      onChange={handleChangeFile}
+                      accept='image/png, image/jpeg, image/gif, image/png'
+                      name="formFile"
+                    />
+                    {/* </div> */}
+                    <button
+                      type='submit'
+                      className='button-submit-edit mt-2'
+                    >
+                      Cập nhật ảnh
+                    </button>
+                  </Form.Item>
+                </Form>
+              </div>
+
+              <div className="mt-4 text-center">
+                <i className='fa fa-user-check text-white bg-green-500 rounded-full p-2' />
+                <span className="ml-2 font-semibold text-lg">Xác minh danh tính</span>
+              </div>
+
+              <div className="my-2 mx-10 text-center">
+                <p>Xác minh danh tính của bạn với huy hiệu xác minh danh tính.</p>
+              </div>
+
+              <div className='text-center'>
+                <button
+                  type='button'
+                  className='button-success-edit mt-2'
+                >
+                  Nhận huy hiệu
                 </button>
-              </Form.Item>
-            </Form>
-          </div>
+              </div>
 
-          <div className="mt-4 text-center">
-            <i className='fa fa-user-check text-white bg-green-500 rounded-full p-2' />
-            <span className="ml-2 font-semibold text-lg">Xác minh danh tính</span>
-          </div>
+              <div className="mt-4 border-t py-2 ml-3">
+                <div className="font-semibold text-lg text-gray-800">
+                  Đã xác nhận
+                </div>
 
-          <div className="mt-4 border-t py-2 ml-3">
-            <div className="font-semibold text-lg text-gray-800">
-              Đã xác nhận
+                <div className="mt-2">
+                  <i className="fa fa-check-circle"></i>
+                  <span className="ml-2 text-sm italic">
+                    Địa chỉ email
+                  </span>
+                </div>
+
+                <div className="mt-2">
+                  <i className="fa fa-check-circle"></i>
+                  <span className="ml-2 text-sm italic">
+                    Số điện thoại
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <div className="mt-2">
-              <i className="fa fa-check-circle"></i>
-              <span className="ml-2 text-sm italic">
-                Địa chỉ email
-              </span>
+            {/* Right Side */}
+            <div className='w-full md:w-2/4 lg:w-3/5 pl-5'>
+              <Form
+                layout='horizontal'
+                size={componentSize}
+                labelCol={{ span: 4, }}
+                wrapperCol={{ span: 14, }}
+                style={{ maxWidth: 1000, }}
+                onSubmitCapture={formik.handleSubmit}
+                onValuesChange={onFormLayoutChange}
+              >
+
+                <div class="border-b py-2">
+                  <div className='flex justify-between items-center'>
+                    <div>
+                      <p className='text-lg font-bold'>Họ tên</p>
+                      <p>{userDetail?.name}</p>
+                    </div>
+                    <div>
+                      <p
+                        class="underline font-md text-md tracking-wide text-gray-800 hover:text-yellow-600 duration-150 cursor-pointer"
+                        onClick={() => toggleEditing('name')}
+                      >
+                        Thay đổi
+                      </p>
+                    </div>
+                  </div>
+                  <div className={isEditing.name ? '' : 'hidden'}>
+                    <Input
+                      name='name'
+                      placeholder='Nhập họ tên'
+                      value={formik.values.name}
+                      onChange={formik.handleChange}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+
+                    />
+                    <button
+                      type='submit'
+                      className='button-submit-edit py-3 px-5 mt-2'
+                    >
+                      Cập nhật
+                    </button>
+                  </div>
+                </div>
+
+                <div class="border-b py-2">
+                  <div className='flex justify-between items-center'>
+                    <div>
+                      <p className='text-lg font-bold'>Email</p>
+                      <p>{userDetail?.email}</p>
+                    </div>
+                    <div>
+                      <p class="underline font-md text-md tracking-wide text-gray-800 hover:text-yellow-600 duration-150 cursor-pointer"
+                        onClick={() => toggleEditing('email')}
+                      >
+                        Thay đổi
+                      </p>
+                    </div>
+                  </div>
+                  <div className={isEditing.email ? '' : 'hidden'}>
+                    <Input
+                      name='email'
+                      placeholder='Nhập email'
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+
+                    />
+                    <button
+                      type='submit'
+                      className='button-submit-edit py-3 px-5 mt-2'
+                    >
+                      Cập nhật
+                    </button>
+                  </div>
+                </div>
+
+                <div class="border-b py-2">
+                  <div className='flex justify-between items-center'>
+                    <div>
+                      <p className='text-lg font-bold'>Số điện thoại</p>
+                      <p>{userDetail?.phone}</p>
+                    </div>
+                    <div>
+                      <p class="underline font-md text-md tracking-wide text-gray-800 hover:text-yellow-600 duration-150 cursor-pointer"
+                        onClick={() => toggleEditing('phone')}
+                      >
+                        Thay đổi
+                      </p>
+                    </div>
+                  </div>
+                  <div className={isEditing.phone ? '' : 'hidden'}>
+                    <Input
+                      name='phone'
+                      placeholder='Nhập số điện thoại'
+                      value={formik.values.phone}
+                      onChange={formik.handleChange}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+
+                    />
+                    <button
+                      type='submit'
+                      className='button-submit-edit py-3 px-5 mt-2'
+                    >
+                      Cập nhật
+                    </button>
+                  </div>
+                </div>
+
+                <div class="border-b py-2">
+                  <div className='flex justify-between items-center'>
+                    <div>
+                      <p className='text-lg font-bold'>Ngày sinh</p>
+                      <p>{userDetail?.birthday}</p>
+                    </div>
+                    <div>
+                      <p
+                        class="underline font-md text-md tracking-wide text-gray-800 hover:text-yellow-600 duration-150 cursor-pointer"
+                        onClick={() => toggleEditing('birthday')}
+                      >
+                        Thay đổi
+                      </p>
+                    </div>
+                  </div>
+                  <div className={isEditing.birthday ? '' : 'hidden'}>
+                    <Input
+                      name='birthday'
+                      placeholder='Nhập ngày sinh'
+                      value={formik.values.birthday}
+                      onChange={formik.handleChange}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+
+                    />
+                    <button
+                      type='submit'
+                      className='button-submit-edit py-3 px-5 mt-2'
+                    >
+                      Cập nhật
+                    </button>
+                  </div>
+                </div>
+
+                <div class="border-b py-2">
+                  <div className='flex justify-between items-center'>
+                    <div>
+                      <p className='text-lg font-bold'>Giới tính</p>
+                      <p>{userDetail?.gender ? "Nam" : "Nữ"}</p>
+                    </div>
+                    <div>
+                      <p class="underline font-md text-md tracking-wide text-gray-800 hover:text-yellow-600 duration-150 cursor-pointer"
+                        onClick={() => toggleEditing('gender')}
+                      >
+                        Thay đổi
+                      </p>
+                    </div>
+                  </div>
+                  <div className={isEditing.gender ? '' : 'hidden'}>
+                    <Select
+                      placeholder='Giới tính'
+                      value={formik.values.gender ? "true" : "false"}
+                      onChange={(value) => {
+                        formik.setFieldValue('gender', value === 'true');
+                      }}
+                    >
+                      <Select.Option value='true'>Nam</Select.Option>
+                      <Select.Option value='false'>Nữ</Select.Option>
+                    </Select>
+                    <button
+                      type='submit'
+                      className='button-submit-edit py-3 px-5 mt-2'
+                    >
+                      Cập nhật
+                    </button>
+                  </div>
+                </div>
+              </Form>
             </div>
+
           </div>
-        </div>
-
-        {/* Right Side */}
-        <div className='w-full md:w-2/4 lg:w-3/5 pl-5'>
-          <Form
-            layout='horizontal'
-            size={componentSize}
-            labelCol={{ span: 4, }}
-            wrapperCol={{ span: 14, }}
-            style={{ maxWidth: 1000, }}
-            onSubmitCapture={formik.handleSubmit}
-            onValuesChange={onFormLayoutChange}
-          >
-            <Form.Item
-              label='ID'
-              htmlFor='id'
-            >
-              <Input
-                name='id'
-                placeholder='Nhập số id'
-                value={formik.values.id}
-                onChange={formik.handleChange}
-                disabled={true}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label='Họ tên'
-              htmlFor='name'
-            >
-              <Input
-                name='name'
-                placeholder='Nhập họ tên'
-                value={formik.values.name}
-                onChange={formik.handleChange}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label='Email'
-              htmlFor='email'
-            >
-              <Input
-                name='email'
-                placeholder='Nhập email'
-                value={formik.values.email}
-                onChange={formik.handleChange}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label='Điện Thoại'
-              htmlFor='phone'
-            >
-              <Input
-                name='phone'
-                placeholder='Nhập số điện thoại'
-                value={formik.values.phone}
-                onChange={formik.handleChange}
-
-              />
-            </Form.Item>
-
-            <Form.Item
-              label='Ngày sinh'
-              htmlFor='birthday'
-            >
-              <Input
-                name='birthday'
-                placeholder='Nhập ngày sinh'
-                value={formik.values.birthday}
-                onChange={formik.handleChange}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label='Giới tính'
-              htmlFor='gender'
-            >
-              <Select
-                placeholder='Giới tính'
-                value={formik.values.gender ? "true" : "false"}
-                onChange={(value) => {
-                  formik.setFieldValue('gender', value === 'true');
-                }}
-              >
-                <Select.Option value='true'>Nam</Select.Option>
-                <Select.Option value='false'>Nữ</Select.Option>
-              </Select>
-            </Form.Item >
-
-            <Form.Item
-              label='Vai trò'
-              htmlFor='role'
-            >
-              <Select
-                placeholder='Chọn vai trò người dùng'
-                value={formik.values.role}
-                onChange={(value) => {
-                  formik.setFieldValue('role', value);
-                }}
-              >
-                <Select.Option value='ADMIN'>ADMIN</Select.Option>
-                <Select.Option value='USER'>USER</Select.Option>
-              </Select>
-            </Form.Item >
-
-            <Form.Item label='Thao tác'>
-              <button
-                type='submit'
-                className='button-submit-edit'
-              >
-                Cập nhật
-              </button>
-            </Form.Item>
-          </Form>
         </div>
       </div>
     </Fragment >

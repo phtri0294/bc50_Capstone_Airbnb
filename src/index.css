@@ -112,3 +112,8 @@
 .font-link-edit{
     @apply text-gray-600 hover:text-green-600 hover:no-underline transition-all;
 }
+
+/*================= HomeTemplate =================*/
+.button-success-edit{
+    @apply rounded-md font-semibold border-2 border-gray-600 text-gray-800 p-2 hover:bg-green-600 hover:border-green-600 hover:text-white transition-all;
+}

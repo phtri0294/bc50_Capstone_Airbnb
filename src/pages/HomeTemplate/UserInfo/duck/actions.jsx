@@ -19,7 +19,7 @@ const actUpdateUser = (id, formData, navigate) => {
                 if (result.data.statusCode === 200) {
                     dispatch(actUpdateSuccess(result.data.content));
                     alert('Cập nhật thông tin người dùng thành công');
-                    navigate('/admin/User', { replace: true })
+                    navigate('/', { replace: true })
                 }
             })
             .catch((error) => {
