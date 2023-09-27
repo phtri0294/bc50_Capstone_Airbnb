@@ -11,11 +11,11 @@ const routes = [
         element: lazy(() => import('pages/HomeTemplate/HomePage')),
       },
       {
-        path: 'user-info/:id',
+        path: 'user-info',
         element: lazy(() => import('../pages/HomeTemplate/UserInfo')),
       },
       {
-        path: 'user-book-room/:id',
+        path: 'user-book-room',
         element: lazy(() => import('../pages/HomeTemplate/UserInfo/UserBookRoom/')),
       },
     ],
