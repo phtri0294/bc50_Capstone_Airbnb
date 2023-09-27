@@ -20,16 +20,8 @@ import {
   uploadBookRoomImgReducer,
 } from './../pages/AdminTemplate/BookRoom/EditBookRoom/duck/reducer';
 
-import {
-  manageLocationReducer,
-  deleteLocationReducer,
-} from './../pages/AdminTemplate/Location/duck/reducer';
-
-import {
-  updateLocationReducer,
-  detailLocationReducer,
-  uploadLocationImgReducer,
-} from './../pages/AdminTemplate/Location/EditLocation/duck/reducer';
+import manageLocationReducer from './../pages/AdminTemplate/Location/duck/reducer';
+import detailLocationReducer from './../pages/AdminTemplate/Location/EditLocation/duck/reducer';
 
 import HometemplateManageRoomReducer from './../pages/HomeTemplate/HomePage/ListRoom/duck/reducer';
 
@@ -51,11 +43,8 @@ const rootReducer = combineReducers({
   uploadBookRoomImgReducer,
 
   manageLocationReducer,
-  deleteLocationReducer,
-
   detailLocationReducer,
-  updateLocationReducer,
-  uploadLocationImgReducer,
+
 
   HometemplateManageRoomReducer,
 });

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -12,87 +12,82 @@ export default function EditLocation() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [componentSize, setComponentSize] = useState('default');
-    const [imgSrc, setImgSrc] = useState('');
-    const [formData, setFormData] = useState(null);
-
+    const [defaultImgSrc, setDefaultImgSrc] = useState('https://airbnbnew.cybersoft.edu.vn/avatar/27-09-2023-11-33-00-hotel.png');
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
     };
 
     const locationDetail = useSelector(state => state.detailLocationReducer.data);
+    const [imgSrc, setImgSrc] = useState(locationDetail?.hinhAnh || defaultImgSrc);
+
+    useEffect(() => {
+        if (locationDetail?.hinhAnh) {
+            setImgSrc(locationDetail.hinhAnh);
+        } else {
+            setImgSrc(defaultImgSrc);
+        }
+    }, [locationDetail?.hinhAnh, defaultImgSrc]);
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            id: locationDetail?.id || '',
-            tenViTri: locationDetail?.tenViTri || '',
-            tinhThanh: locationDetail?.tinhThanh || '',
-            quocGia: locationDetail?.quocGia || '',
-            hinhAnh: locationDetail?.hinhAnh || null,
+            id: locationDetail?.id,
+            tenViTri: locationDetail?.tenViTri,
+            tinhThanh: locationDetail?.tinhThanh,
+            quocGia: locationDetail?.quocGia,
+            hinhAnh: null,
         },
 
         onSubmit: async (values) => {
             const locationId = values.id;
-            let formData = new FormData();
-            for (let key in values) {
-                if (key !== 'hinhAnh' || (key === 'hinhAnh' && values.hinhAnh !== null)) {
-                    formData.append(key, values[key]);
-                }
-            }
             await dispatch(actUpdateLocation(locationId, values, navigate));
         },
-
     });
 
-    const handleChangeFile = async (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
+    const formikImg = useFormik({
+        initialValues: {
+            formFile: null
+        },
+
+        onSubmit: (value) => {
+            const locationId = locationDetail.id;
+            let formData = new FormData();
+            for (let key in value) {
+                if (key !== 'formFile') {
+                    formData.append(key, value[key]);
+                } else {
+                    formData.append('formFile', value.formFile);
+                }
+            };
+            dispatch(actUploadLocationImg(locationId, formData));
+        },
+    });
+
+    const handleChangeFile = (e) => {
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
         reader.onload = (e) => {
             setImgSrc(e.target.result);
-            formik.setFieldValue('hinhAnh', file);
+            formikImg.setFieldValue('formFile', file);
         };
-        reader.readAsDataURL(file);
-    };
-
-    const handleUpdateImage = async () => {
-        const locationId = formik.values.id;
-        if (formik.values.hinhAnh !== null) {
-            let updatedFormData = new FormData();
-            for (let key in formik.values) {
-                if (key !== 'hinhAnh') {
-                    updatedFormData.append(key, formik.values[key]);
-                } else {
-                    updatedFormData.append('File', formik.values.hinhAnh, formik.values.hinhAnh.name);
-                }
-            }
-            await dispatch(actUploadLocationImg(locationId, updatedFormData));
-            const newImageURL = URL.createObjectURL(formik.values.hinhAnh);
-            setImgSrc(newImageURL);
-        } else {
-            alert('Vui lòng chọn một hình ảnh trước khi cập nhật.');
-        }
     };
 
     return (
         <Fragment>
-            <Form
-                layout='horizontal'
-                size={componentSize}
-                labelCol={{ span: 4, }}
-                wrapperCol={{ span: 14, }}
-                style={{ maxWidth: 1000, }}
-                onSubmitCapture={formik.handleSubmit}
-                onValuesChange={onFormLayoutChange}
-            >
-                <div
-                    className='heading-page text-orange-800'>
-                    CHỈNH SỬA THÔNG TIN
-                </div>
-                <hr className='h-divider mb-4' />
-                <div className='w-full flex justify-stretch border'>
-                    {/* Left Side */}
-                    <div className='w-full md:w-3/6 lg:w-3/6 border'>
-                        <div className='w-full border py-2 pl-5'>
+            <div
+                className='heading-page text-orange-800'>
+                CHỈNH SỬA THÔNG TIN VỊ TRÍ
+            </div>
+            <hr className='h-divider mb-4' />
+            <div className='w-full flex justify-stretch border'>
+                {/* Left Side */}
+                <div className='w-full md:w-3/6 lg:w-3/6 border'>
+                    <div className='w-full border py-2 pl-5'>
+                        <Form
+                            onSubmitCapture={formikImg.handleSubmit}
+                            onValuesChange={onFormLayoutChange}
+                        >
                             <Form.Item
                                 name='hinhAnh'
                                 className='grid justify-items-center'
@@ -112,20 +107,27 @@ export default function EditLocation() {
                                     accept='image/png, image/jpeg, image/gif'
                                 />
                                 <button
-                                    type='button'
+                                    type='submit'
                                     className='button-submit-edit mt-2 ml-5'
-                                    onClick={handleUpdateImage}
-
-                                // type='submit'
                                 >
                                     Cập nhật ảnh
                                 </button>
                             </Form.Item>
-                        </div>
+                        </Form>
                     </div>
+                </div>
 
-                    {/* Right Side */}
-                    <div className='w-full md:w-4/6 lg:w-4/6 ml-5'>
+                {/* Right Side */}
+                <div className='w-full md:w-4/6 lg:w-4/6 ml-5'>
+                    <Form
+                        layout='horizontal'
+                        size={componentSize}
+                        labelCol={{ span: 4, }}
+                        wrapperCol={{ span: 14, }}
+                        style={{ maxWidth: 1000, }}
+                        onSubmitCapture={formik.handleSubmit}
+                        onValuesChange={onFormLayoutChange}
+                    >
                         <Form.Item
                             label='ID'
                             htmlFor='id'
@@ -193,9 +195,9 @@ export default function EditLocation() {
                                 Cập nhật
                             </button>
                         </Form.Item>
-                    </div>
+                    </Form>
                 </div>
-            </Form>
+            </div>
         </Fragment >
     );
 };

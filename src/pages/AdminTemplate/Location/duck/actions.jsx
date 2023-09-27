@@ -49,7 +49,7 @@ const actDeleteLocation = (id) => {
     api.delete(`vi-tri/${id}`)
       .then((result) => {
         dispatch(actDeleteSuccess(result.data.content));
-        alert('Bạn đã xóa căn phòng thành công!');
+        alert('Bạn đã xóa vị trí thành công!');
       })
       .catch((error) => {
         dispatch(actDeleteFail(error));

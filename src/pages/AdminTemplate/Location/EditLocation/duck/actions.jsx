@@ -18,7 +18,7 @@ const actUpdateLocation = (id, formData, navigate) => {
             .then((result) => {
                 if (result.data.statusCode === 200) {
                     dispatch(actUpdateSuccess(result.data.content));
-                    alert('Cập nhật thông tin phòng thành công');
+                    alert('Cập nhật thông tin vị trí thành công');
                     navigate('/admin/Location', { replace: true })
                 }
             })
@@ -52,11 +52,11 @@ const actUpdateFail = (error) => {
 const actUploadLocationImg = (id, formData) => {
     return (dispatch) => {
         dispatch(actUploadImgRequest());
-        api.post(`phong-thue/upload-hinh-phong?maPhong=${id}`, formData)
+        api.post(`vi-tri/upload-hinh-vitri?maViTri=${id}`, formData)
             .then((result) => {
                 if (result.data.statusCode === 200) {
                     dispatch(actUploadImgSuccess(result.data.content));
-                    alert('Cập nhật hình ảnh phòng thành công');
+                    alert('Cập nhật hình ảnh vị trí thành công');
                 }
             })
             .catch((error) => {

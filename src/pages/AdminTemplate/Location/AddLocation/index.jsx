@@ -5,10 +5,8 @@ import {
     Form,
     Input,
     Radio,
-    Switch,
-    Select
 } from 'antd';
-import { useFormik, Formik } from 'formik';
+import {  Formik } from 'formik';
 import actAddNewLocation from './duck/actions';
 
 
@@ -17,8 +15,6 @@ export default function AddLocation() {
     const navigate = useNavigate();
     const [componentSize, setComponentSize] = useState('default');
     const [form] = Form.useForm();
-    const [imgSrc, setImgSrc] = useState('');
-
     const onFormLayoutChange = ({ size }) => {
         setComponentSize(size);
     };
@@ -56,33 +52,6 @@ export default function AddLocation() {
                         THÊM VỊ TRÍ MỚI
                     </div>
                     <hr className='h-divider mb-4' />
-                    <div className='w-full flex justify-stretch border'>
-                        {/* Left Side */}
-                        <div className='w-full md:w-3/6 lg:w-3/6 border'>
-                            <div className='w-full border py-2 pl-5'>
-                                <Form.Item
-                                    name='hinhAnh'
-                                    className='grid justify-items-center'
-                                >
-                                    <img
-                                        style={{ width: 170, height: 170 }}
-                                        className='ml-5 rounded-full'
-                                        src={imgSrc !== '' ? imgSrc : 'https://a0.muscache.com/defaults/user_pic-50x50.png?v=3'}
-                                        alt='...'
-                                    />
-                                    <br />
-                                    <input
-                                        type='file'
-                                        className='ml-5'
-                                        // onChange={handleChangeFile}
-                                        accept='image/png, image/jpeg,image/gif,image/png'
-                                    />
-                                </Form.Item>
-                            </div>
-                        </div>
-
-                        {/* Right Side */}
-                        <div className='w-full md:w-4/6 lg:w-4/6 ml-5'>
                             <Form.Item
                                 label='Cỡ chữ'
                                 name='size'
@@ -141,9 +110,6 @@ export default function AddLocation() {
                                 </button>
                             </Form.Item>
                             {/* </Form> */}
-                        </div>
-
-                    </div>
                 </Form>
             </Formik>
         </Fragment >

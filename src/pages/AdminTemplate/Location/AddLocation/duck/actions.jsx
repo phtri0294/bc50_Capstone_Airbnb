@@ -8,10 +8,10 @@ import api from 'utils/apiUtil';
 const actAddNewLocation = (formData, navigate) => {
     return (dispatch) => {
         dispatch(actAddNewRequest());
-        api.post('phong-thue', formData)
+        api.post('vi-tri', formData)
             .then((result) => {
                 dispatch(actAddNewSuccess(result.data.content));
-                alert('Bạn đã thêm phòng mới thành công!');
+                alert('Bạn đã thêm vị trí mới thành công!');
                 navigate("/admin/Location", { replace: true });
             })
             .catch((error) => {
