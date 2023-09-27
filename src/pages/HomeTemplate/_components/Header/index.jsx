@@ -136,7 +136,7 @@ export default function Header() {
                                                 <div className="dropdown-divider" />
                                                 <a
                                                     className="dropdown-item"
-                                                    href="#"
+                                                    href="/"
                                                     onClick={(e) => {
                                                         handleLogout();
                                                     }}

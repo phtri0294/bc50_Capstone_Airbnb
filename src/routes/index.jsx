@@ -82,10 +82,6 @@ const routes = [
     path: 'register',
     element: lazy(() => import('../pages/AdminTemplate/RegisterPage')),
   },
-  // {
-  //   path: '/login',
-  //   element: lazy(() => import('./../pages/HomeTemplate/Login/Login')),
-  // },
 ];
 
 const renderRoutes = () => {

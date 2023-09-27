@@ -21,7 +21,7 @@ export default function AuthPage() {
         });
     };
 
-    const handleLogin = (e) => {
+    const handleAuth = (e) => {
         e.preventDefault();
         dispatch(actAuth(state, navigate));
     };
@@ -49,7 +49,7 @@ export default function AuthPage() {
 
             <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border rounded-lg shadow-lg bg-white px-10 py-5 w-4/5 sm:w-1/2 md:w-2/5 form-container'>
                 <form
-                    onSubmit={handleLogin}
+                    onSubmit={handleAuth}
                     className='max-w-screen-sm'
                 >
                     <div className='mt-1 px-1 sm:px-1 md:px-1 lg:px-1 lg:mt-1 xl:px-1 xl:max-w-2xl'>
