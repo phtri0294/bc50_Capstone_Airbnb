@@ -19,7 +19,7 @@ const actAuth = (user, navigate) => {
           let redirectRoute = "/";
           if (user.user.role === 'ADMIN') {
             localStorageKey = "LOGIN_ADMIN";
-            redirectRoute = "/admin";
+            redirectRoute = "/admin/User";
           }
 
           if (previousRoute) {

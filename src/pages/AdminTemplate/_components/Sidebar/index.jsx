@@ -10,7 +10,7 @@ export default function Sidebar() {
       children,
       label,
     };
-  }
+  };
 
   const items = [
     getItem(
@@ -73,13 +73,13 @@ export default function Sidebar() {
       id='accordionSidebar'
     >
       {/* Sidebar - Brand */}
-      <div className='logo-container'>
+      <NavLink className='nav-link logo-container' to={'/admin'}>
         <img
           className='logo mx-auto'
           src='https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg'
           alt='Logo'
         />
-      </div>
+      </NavLink>
 
       <hr className='sidebar-divider mb-1' />
 

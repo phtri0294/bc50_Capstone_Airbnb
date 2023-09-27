@@ -22,7 +22,7 @@ const routes = [
   },
   {
     path: 'admin',
-    element: lazy(() => import('../pages/AdminTemplate')),
+    element: lazy(() => import('../pages/AdminTemplate/')),
     nested: [
       {
         path: 'user',
