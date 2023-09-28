@@ -1,7 +1,7 @@
 import {
-    ADD_NEW_USER_REQUEST,
-    ADD_NEW_USER_SUCCESS,
-    ADD_NEW_USER_FAIL,
+    ADD_NEW_LOCATION_REQUEST,
+    ADD_NEW_LOCATION_SUCCESS,
+    ADD_NEW_LOCATION_FAIL,
   } from './constants';
 
 const initailState = {
@@ -10,21 +10,21 @@ const initailState = {
     error: null,
 };
 
-const addNewUserReducer = (state = initailState, action) => {
+const addNewLLocationReducer = (state = initailState, action) => {
     switch (action.type) {
-        case ADD_NEW_USER_REQUEST: {
+        case ADD_NEW_LOCATION_REQUEST: {
             state.loading = true;
             state.data = null;
             state.error = null;
             return { ...state };
         };
-        case ADD_NEW_USER_SUCCESS: {
+        case ADD_NEW_LOCATION_SUCCESS: {
             state.loading = false;
             state.data = action.payload;
             state.error = null;
             return { ...state };
         };
-        case ADD_NEW_USER_FAIL: {
+        case ADD_NEW_LOCATION_FAIL: {
             state.loading = false;
             state.data = null;
             state.error = action.payload;
@@ -35,4 +35,4 @@ const addNewUserReducer = (state = initailState, action) => {
     };
 };
 
-export default addNewUserReducer;
+export default addNewLLocationReducer;

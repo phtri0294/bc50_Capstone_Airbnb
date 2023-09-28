@@ -17,28 +17,28 @@ const authReducer = (state = initialState, action) => {
             state.loading = true;
             state.data = null;
             state.error = null;
-            return { ...state }
-        }
+            return { ...state };
+        };
         case AUTH_SUCCESS: {
             state.loading = false;
             state.data = action.payload;
             state.error = null;
-            return { ...state }
-        }
+            return { ...state };
+        };
         case AUTH_FAIL: {
             state.loading = false;
             state.data = null;
             state.error = action.payload;
-            return { ...state }
-        }
+            return { ...state };
+        };
         case AUTH_CLEAR: {
             state.loading = false;
             state.data = null;
             state.error = null;
-            return { ...state }
-        }
+            return { ...state };
+        };
         default:
-            return { ...state }
+            return { ...state };
     }
 };
 

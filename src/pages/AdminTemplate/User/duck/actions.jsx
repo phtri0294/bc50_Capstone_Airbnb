@@ -10,43 +10,41 @@ import api from 'utils/apiUtil';
 
 const actManageUser = (keyword = '') => {
     return (dispatch) => {
-        dispatch(actUserRequest());
+        dispatch(actManageRequest());
         if (keyword !== '') {
             return api.get(`users/search/${keyword}`)
                 .then((result) => {
-                    console.log(result.data)
-                    dispatch(actUserSuccess(result.data.content));
+                    dispatch(actManageSuccess(result.data.content));
                 })
                 .catch((error) => {
-                    dispatch(actUserFail(error));
+                    dispatch(actManageFail(error));
                 });
         } else {
             return api.get(`users`)
                 .then((result) => {
-                    console.log(result.data)
-                    dispatch(actUserSuccess(result.data.content));
+                    dispatch(actManageSuccess(result.data.content));
                 })
                 .catch((error) => {
-                    dispatch(actUserFail(error));
+                    dispatch(actManageFail(error));
                 });
         }
     };
 };
 
-const actUserRequest = () => {
+const actManageRequest = () => {
     return {
         type: MANAGE_USER_REQUEST,
     };
 };
 
-const actUserSuccess = (data) => {
+const actManageSuccess = (data) => {
     return {
         type: MANAGE_USER_SUCCESS,
         payload: data
     };
 };
 
-const actUserFail = (error) => {
+const actManageFail = (error) => {
     return {
         type: MANAGE_USER_FAIL,
         payload: error
@@ -55,33 +53,33 @@ const actUserFail = (error) => {
 
 const actDeleteUser = (id) => {
     return (dispatch) => {
-        dispatch(actDeleteUserRequest());
+        dispatch(actDeleteRequest());
         api.delete(`users?id=${id}`)
             .then((result) => {
-                dispatch(actDeleteUserSuccess(result.data.content));
+                dispatch(actDeleteSuccess(result.data.content));
                 alert('Bạn đã xóa người dùng thành công!');
             })
             .catch((error) => {
-                dispatch(actDeleteUserFail(error));
+                dispatch(actDeleteFail(error));
                 alert(error.message);
             })
     };
 };
 
-const actDeleteUserRequest = () => {
+const actDeleteRequest = () => {
     return {
         type: DELETE_USER_REQUEST,
     };
 };
 
-const actDeleteUserSuccess = (data) => {
+const actDeleteSuccess = (data) => {
     return {
         type: DELETE_USER_SUCCESS,
         payload: data
     };
 };
 
-const actDeleteUserFail = (error) => {
+const actDeleteFail = (error) => {
     return {
         type: DELETE_USER_FAIL,
         payload: error

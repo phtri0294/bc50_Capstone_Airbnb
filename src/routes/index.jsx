@@ -10,11 +10,19 @@ const routes = [
         path: '',
         element: lazy(() => import('pages/HomeTemplate/HomePage')),
       },
+      {
+        path: 'user-info',
+        element: lazy(() => import('../pages/HomeTemplate/UserInfo')),
+      },
+      {
+        path: 'user-book-room',
+        element: lazy(() => import('../pages/HomeTemplate/UserInfo/UserBookRoom/')),
+      },
     ],
   },
   {
     path: 'admin',
-    element: lazy(() => import('../pages/AdminTemplate')),
+    element: lazy(() => import('../pages/AdminTemplate/')),
     nested: [
       {
         path: 'user',
@@ -52,6 +60,18 @@ const routes = [
         path: 'edit-location/:id',
         element: lazy(() => import('../pages/AdminTemplate/Location/EditLocation/')),
       },
+      {
+        path: 'book-room',
+        element: lazy(() => import('../pages/AdminTemplate/BookRoom')),
+      },
+      {
+        path: 'add-book-room',
+        element: lazy(() => import('../pages/AdminTemplate/BookRoom/AddBookRoom/')),
+      },
+      {
+        path: 'edit-book-room/:id',
+        element: lazy(() => import('../pages/AdminTemplate/BookRoom/EditBookRoom/')),
+      },
     ],
   },
   {
@@ -62,10 +82,6 @@ const routes = [
     path: 'register',
     element: lazy(() => import('../pages/AdminTemplate/RegisterPage')),
   },
-  // {
-  //   path: '/login',
-  //   element: lazy(() => import('./../pages/HomeTemplate/Login/Login')),
-  // },
 ];
 
 const renderRoutes = () => {

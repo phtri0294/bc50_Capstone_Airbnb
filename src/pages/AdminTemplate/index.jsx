@@ -1,10 +1,16 @@
 import React from 'react'
+import { Navigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import Footer from './_components/Footer';
 import Sidebar from './_components/Sidebar';
 import Topbar from './_components/Topbar';
 
 export default function AdminTemplate() {
+    //Check login
+    if (!localStorage.getItem('LOGIN_ADMIN')) {
+        return <Navigate to='/auth' replace />
+    }
+
     return (
         <div className='flex w-screen h-screen'>
             {/* Sidebar */}

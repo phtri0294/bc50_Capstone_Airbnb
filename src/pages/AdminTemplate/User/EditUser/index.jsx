@@ -1,33 +1,33 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Form, Input, Radio, Select } from 'antd';
+import {
+  Form,
+  Input,
+  Select,
+} from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { actUpdateUser, actUploadUserImg } from './duck/actions';
 
-const EditUser = () => {
+export default function EditUser() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [componentSize, setComponentSize] = useState('default');
-  const [imgSrc, setImgSrc] = useState('');
-  const [formData, setFormData] = useState(null);
-
+  const [defaultImgSrc, setDefaultImgSrc] = useState('https://airbnbnew.cybersoft.edu.vn/avatar/24-09-2023-04-04-52-1.png');
   const onFormLayoutChange = ({ size }) => {
     setComponentSize(size);
   };
 
-  const handleChangeFile = async (e) => {
-    let file = e.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e) => {
-      setImgSrc(e.target.result);
-    };
-    formik.setFieldValue('hinhAnh', file);
-    setFormData(file);
-  };
+  const userDetail = useSelector(state => state.detailUserReducer.data);
+  const [imgSrc, setImgSrc] = useState(userDetail?.avatar || defaultImgSrc);
 
-  const userDetail = useSelector(state => state.detailUserReducer.userDetail);
+  useEffect(() => {
+    if (userDetail?.avatar) {
+      setImgSrc(userDetail.avatar);
+    } else {
+      setImgSrc(defaultImgSrc);
+    }
+  }, [userDetail?.avatar, defaultImgSrc]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -35,8 +35,7 @@ const EditUser = () => {
       id: userDetail?.id,
       name: userDetail?.name,
       email: userDetail?.email,
-      password: userDetail?.password || '',
-      phone: userDetail?.phone || '',
+      phone: userDetail?.phone,
       birthday: userDetail?.birthday,
       gender: userDetail?.gender,
       role: userDetail?.role,
@@ -49,55 +48,78 @@ const EditUser = () => {
     }
   });
 
+  const formikImg = useFormik({
+    initialValues: {
+      formFile: null
+    },
+
+    onSubmit: (value) => {
+      let formData = new FormData();
+      for (let key in value) {
+        if (key !== 'formFile') {
+          formData.append(key, value[key]);
+        } else {
+          formData.append('formFile', value.formFile);
+        }
+      };
+      dispatch(actUploadUserImg(formData));
+    },
+  });
+
+  const handleChangeFile = (e) => {
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      setImgSrc(e.target.result);
+      formikImg.setFieldValue('formFile', file);
+    };
+  };
+
   return (
     <Fragment>
       <div
         className='heading-page text-orange-800'>
-        CHỈNH SỬA THÔNG TIN
+        CHỈNH SỬA THÔNG TIN NGƯỜI DÙNG
       </div>
       <hr className='h-divider mb-4' />
 
       <div className='flex flex-wrap justify-center'>
-        {/* Left <Side></Side> */}
+        {/* Left Side */}
         <div className='w-full md:w-1/3 border'>
-
-          <div className='w-full border rounded-lg px-3 pt-2'>
-            <Form.Item
-              className='ml-5'
+          <div className='w-full border px-3 pt-2'>
+            <Form
+              onSubmitCapture={formikImg.handleSubmit}
+              onValuesChange={onFormLayoutChange}
             >
-              <img
-                style={{ width: 170, height: 170 }}
-                className='mx-auto rounded-full'
-                src={imgSrc !== '' ? imgSrc : 'https://a0.muscache.com/defaults/user_pic-50x50.png?v=3'}
-                alt='...'
-              />
-              <br />
-              <input
-                type='file'
-                onChange={handleChangeFile}
-                accept='image/png, image/jpeg,image/gif,image/png'
-              />
-              <button
-                type='submit'
-                className='button-submit-edit mt-2'
-                onClick={() => {
-                  if (formData) {
-                    dispatch(actUploadUserImg(formData));
-                  } else {
-                    alert('Vui lòng chọn một hình ảnh trước khi cập nhật.');
-                  }
-                }}
-              >
-                Cập nhật ảnh
-              </button>
-            </Form.Item>
+              <Form.Item>
+                <img
+                  style={{ width: 170, height: 170 }}
+                  className='ml-5 rounded-full '
+                  src={imgSrc === '' ? userDetail?.avatar : imgSrc}
+                  alt='...'
+                />
+                <br />
+                <input
+                  type='file'
+                  className='ml-5'
+                  onChange={handleChangeFile}
+                  accept='image/png, image/jpeg, image/gif, image/png'
+                  name="formFile"
+                />
+                <button
+                  type='submit'
+                  className='button-submit-edit mt-2 ml-5'
+                >
+                  Cập nhật ảnh
+                </button>
+              </Form.Item>
+            </Form>
           </div>
 
           <div className="mt-4 text-center">
-            <div>
-              <i className='fa fa-user-check text-white bg-green-500 rounded-full p-2' />
-              <span className="ml-2 font-semibold text-lg">Xác minh danh tính</span>
-            </div>
+            <i className='fa fa-user-check text-white bg-green-500 rounded-full p-2' />
+            <span className="ml-2 font-semibold text-lg">Xác minh danh tính</span>
           </div>
 
           <div className="mt-4 border-t py-2 ml-3">
@@ -163,19 +185,6 @@ const EditUser = () => {
             </Form.Item>
 
             <Form.Item
-              label='Mật Khẩu'
-              htmlFor='password'
-            >
-              <Input
-                name='password'
-                placeholder='Nhập mật khẩu'
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                disabled={true}
-              />
-            </Form.Item>
-
-            <Form.Item
               label='Điện Thoại'
               htmlFor='phone'
             >
@@ -184,7 +193,7 @@ const EditUser = () => {
                 placeholder='Nhập số điện thoại'
                 value={formik.values.phone}
                 onChange={formik.handleChange}
-                disabled={true}
+
               />
             </Form.Item>
 
@@ -243,9 +252,6 @@ const EditUser = () => {
           </Form>
         </div>
       </div>
-
     </Fragment >
   );
 };
-
-export default EditUser;

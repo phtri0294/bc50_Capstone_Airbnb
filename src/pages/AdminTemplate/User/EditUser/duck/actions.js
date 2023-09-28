@@ -2,89 +2,121 @@ import {
     UPDATE_USER_REQUEST,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_FAIL,
-    UPDATE_USERIMG_REQUEST,
-    UPDATE_USERIMG_SUCCESS,
-    UPDATE_USERIMG_FAIL,
-    SET_USER_DETAIL,
+    UPDATE_USER_IMG_REQUEST,
+    UPDATE_USER_IMG_SUCCESS,
+    UPDATE_USER_IMG_FAIL,
+    DETAIL_USER_REQUEST,
+    DETAIL_USER_SUCCESS,
+    DETAIL_USER_FAIL,
 } from './constants';
 import api from 'utils/apiUtil';
 
 const actUpdateUser = (id, formData, navigate) => {
     return (dispatch) => {
-        dispatch(actUpdateUserRequest());
+        dispatch(actUpdateRequest());
         api.put(`users/${id}`, formData)
             .then((result) => {
                 if (result.data.statusCode === 200) {
-                    dispatch(actUpdateUserSuccess(result.data.content));
+                    dispatch(actUpdateSuccess(result.data.content));
                     alert('Cập nhật thông tin người dùng thành công');
                     navigate('/admin/User', { replace: true })
                 }
             })
             .catch((error) => {
-                dispatch(actUpdateUserFail(error));
+                dispatch(actUpdateFail(error));
                 alert(error.message);
             });
     };
 };
 
-const actUpdateUserRequest = () => {
+const actUpdateRequest = () => {
     return {
         type: UPDATE_USER_REQUEST,
     };
 };
 
-const actUpdateUserSuccess = (data) => {
+const actUpdateSuccess = (data) => {
     return {
         type: UPDATE_USER_SUCCESS,
         payload: data,
     };
 };
 
-const actUpdateUserFail = (error) => {
+const actUpdateFail = (error) => {
     return {
         type: UPDATE_USER_FAIL,
         payload: error,
     };
 };
 
-const actDetailUser = (id) => ({
-    type: SET_USER_DETAIL,
-    payload: id,
-});
-
 const actUploadUserImg = (formData) => {
     return (dispatch) => {
-        dispatch(actUploadUserImgRequest());
+        dispatch(actUploadImgRequest());
         api.post(`users/upload-avatar`, formData)
             .then((result) => {
                 if (result.data.statusCode === 200) {
-                    dispatch(actUploadUserImgSuccess(result.data.content));
+                    dispatch(actUploadImgSuccess(result.data.content));
                     alert('Cập nhật hình ảnh người dùng thành công');
                 }
             })
             .catch((error) => {
-                dispatch(actUploadUserImgFail(error));
+                dispatch(actUploadImgFail(error));
                 alert(error.message);
             });
     };
 };
 
-const actUploadUserImgRequest = () => {
+const actUploadImgRequest = () => {
     return {
-        type: UPDATE_USERIMG_REQUEST,
+        type: UPDATE_USER_IMG_REQUEST,
     };
 };
 
-const actUploadUserImgSuccess = (data) => {
+const actUploadImgSuccess = (data) => {
     return {
-        type: UPDATE_USERIMG_SUCCESS,
+        type: UPDATE_USER_IMG_SUCCESS,
         payload: data,
     };
 };
 
-const actUploadUserImgFail = (error) => {
+const actUploadImgFail = (error) => {
     return {
-        type: UPDATE_USERIMG_FAIL,
+        type: UPDATE_USER_IMG_FAIL,
+        payload: error,
+    };
+};
+
+const actDetailUser = (id) => {
+    return (dispatch) => {
+        dispatch(actDetailRequest());
+        api.get(`users/${id}`)
+            .then((result) => {
+                if (result.data.statusCode === 200) {
+                    dispatch(actDetailSuccess(result.data.content));
+                }
+            })
+            .catch((error) => {
+                dispatch(actDetailFail(error));
+            });
+    };
+};
+
+const actDetailRequest = () => {
+    return {
+        type: DETAIL_USER_REQUEST,
+    };
+};
+
+const actDetailSuccess = (data) => {
+    return {
+        type: DETAIL_USER_SUCCESS,
+        payload: data,
+    };
+};
+
+const actDetailFail = (error) => {
+    return {
+        type: DETAIL_USER_FAIL,
         payload: error,
     };
 };

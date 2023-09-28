@@ -19,26 +19,18 @@ export default function ManageUser() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const dataUser = useSelector((state) => state.manageUserReducer.data);
-  const userDetail = useSelector((state) => state.detailUserReducer.data);
   const { Search } = Input;
 
-    useEffect(() => {
-      dispatch(actManageUser());
-    }, [dispatch]);
-
   useEffect(() => {
-    if (userDetail) {
-      navigate('/admin/edit-user', { replace: true });
-    }
-  }, [userDetail, navigate]);
+    dispatch(actManageUser());
+  }, [dispatch]);
 
   const onSearch = keyword => {
     dispatch(actManageUser(keyword));
   };
 
   const handleInfoEditUser = async (id) => {
-    const user = dataUser?.find((user) => user.id === id);
-    dispatch(actDetailUser(user));
+    dispatch(actDetailUser(id));
   };
 
   const columns = [
@@ -85,8 +77,8 @@ export default function ManageUser() {
       title: 'Giới tính',
       dataIndex: 'gender',
       sorter: (a, b) => {
-        let genderA = a.gender.toLowerCase().trim();
-        let genderB = b.gender.toLowerCase().trim();
+        let genderA = a.gender;
+        let genderB = b.gender;
         if (genderA > genderB) {
           return 1;
         }
