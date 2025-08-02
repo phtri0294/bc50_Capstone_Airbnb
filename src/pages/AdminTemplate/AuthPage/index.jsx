@@ -34,9 +34,10 @@ export default function AuthPage() {
         );
     };
 
-    if (localStorage.getItem('LOGIN_ADMIN')) {
-        return <Navigate replace to='/admin' />
-    };
+    //BYPASS AUTH
+    // if (localStorage.getItem('LOGIN_ADMIN')) {
+    //     return <Navigate replace to='/admin' />
+    // };
 
     return (
         <div className="background-container">
