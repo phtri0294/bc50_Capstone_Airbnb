@@ -1,3 +1,4 @@
+// src/redux/actions/actAuth.js
 import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
@@ -13,14 +14,13 @@ const DEFAULT_ADMIN = {
 
 const actAuth = (user, navigate) => {
   return (dispatch) => {
-    dispatch(actAuthRequest());
+    dispatch({ type: AUTH_REQUEST });
 
-    // 1. Check default admin account
+    // Kiểm tra admin mặc định (lưu ý dùng id hoặc username, tùy form)
     if (
-      user.id === DEFAULT_ADMIN.id &&
+      (user.id === DEFAULT_ADMIN.id || user.username === DEFAULT_ADMIN.id) &&
       user.password === DEFAULT_ADMIN.password
     ) {
-      // Tạo user giả lập với quyền ADMIN
       const fakeAdmin = {
         user: {
           id: DEFAULT_ADMIN.id,
@@ -30,73 +30,41 @@ const actAuth = (user, navigate) => {
         token: "fake-admin-token"
       };
       localStorage.setItem("LOGIN_ADMIN", JSON.stringify(fakeAdmin));
+      dispatch({ type: AUTH_SUCCESS, payload: fakeAdmin });
       navigate("/admin/User", { replace: true });
-      dispatch(actAuthSuccess(fakeAdmin));
-      return; // Dừng luôn, không gọi API nữa
+      return;
     }
 
-    // 2. Nếu không phải admin mặc định, gọi API như bình thường
+    // Nếu không phải admin mặc định, gọi API như bình thường
     api
       .post("auth/signin", user)
       .then((result) => {
         if (result.data.statusCode === 200) {
           const previousRoute = localStorage.getItem("previousRoute");
-          const user = result.data.content;
+          const userData = result.data.content;
           let localStorageKey = "LOGIN_USER";
           let redirectRoute = "/";
-          if (user.user.role === "ADMIN") {
+          if (userData.user.role === "ADMIN") {
             localStorageKey = "LOGIN_ADMIN";
             redirectRoute = "/admin/User";
           }
-
+          localStorage.setItem(localStorageKey, JSON.stringify(userData));
+          dispatch({ type: AUTH_SUCCESS, payload: userData });
           if (previousRoute) {
             localStorage.removeItem("previousRoute");
             navigate(previousRoute, { replace: true });
           } else {
             navigate(redirectRoute, { replace: true });
           }
-
-          localStorage.setItem(localStorageKey, JSON.stringify(user));
-          dispatch(actAuthSuccess(user));
         }
       })
       .catch((error) => {
-        dispatch(actAuthFail(error.response?.data?.content || "Đăng nhập thất bại!"));
+        dispatch({
+          type: AUTH_FAIL,
+          payload: error.response?.data?.content || "Đăng nhập thất bại!"
+        });
       });
   };
 };
 
-const actLogout = (navigate) => {
-  if (localStorage.getItem("LOGIN_ADMIN")) {
-    localStorage.removeItem("LOGIN_ADMIN");
-    navigate("/auth", { replace: true });
-  } else if (localStorage.getItem("LOGIN_USER")) {
-    localStorage.removeItem("LOGIN_USER");
-    navigate("/", { replace: true });
-  }
-  return {
-    type: AUTH_CLEAR,
-  };
-};
-
-const actAuthRequest = () => {
-  return {
-    type: AUTH_REQUEST,
-  };
-};
-
-const actAuthSuccess = (data) => {
-  return {
-    type: AUTH_SUCCESS,
-    payload: data,
-  };
-};
-
-const actAuthFail = (error) => {
-  return {
-    type: AUTH_FAIL,
-    payload: error,
-  };
-};
-
-export { actAuth, actLogout };
+export { actAuth };
