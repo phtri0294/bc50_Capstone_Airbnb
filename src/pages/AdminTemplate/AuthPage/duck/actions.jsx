@@ -1,4 +1,3 @@
-// src/redux/actions/actAuth.js
 import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
@@ -8,22 +7,26 @@ import {
 import api from "utils/apiUtil";
 
 const DEFAULT_ADMIN = {
-  id: "admin",
+  email: "admin123",
   password: "admin123"
 };
 
-const actAuth = (user, navigate) => {
+export const actAuth = (user, navigate) => {
   return (dispatch) => {
     dispatch({ type: AUTH_REQUEST });
 
-    // Kiểm tra admin mặc định (lưu ý dùng id hoặc username, tùy form)
+    // Debug xem user truyền lên từ form gồm gì
+    console.log("user login payload:", user);
+
+    // So sánh email và password nhập vào với admin mặc định
     if (
-      (user.id === DEFAULT_ADMIN.id || user.username === DEFAULT_ADMIN.id) &&
+      user.email === DEFAULT_ADMIN.email &&
       user.password === DEFAULT_ADMIN.password
     ) {
+      console.log("==> ĐĂNG NHẬP ADMIN MẶC ĐỊNH");
       const fakeAdmin = {
         user: {
-          id: DEFAULT_ADMIN.id,
+          email: DEFAULT_ADMIN.email,
           role: "ADMIN",
           name: "Super Admin"
         },
@@ -31,7 +34,7 @@ const actAuth = (user, navigate) => {
       };
       localStorage.setItem("LOGIN_ADMIN", JSON.stringify(fakeAdmin));
       dispatch({ type: AUTH_SUCCESS, payload: fakeAdmin });
-      navigate("/admin/User", { replace: true });
+      navigate("/admin", { replace: true }); // Đúng route admin bạn cần
       return;
     }
 
@@ -46,7 +49,7 @@ const actAuth = (user, navigate) => {
           let redirectRoute = "/";
           if (userData.user.role === "ADMIN") {
             localStorageKey = "LOGIN_ADMIN";
-            redirectRoute = "/admin/User";
+            redirectRoute = "/admin";
           }
           localStorage.setItem(localStorageKey, JSON.stringify(userData));
           dispatch({ type: AUTH_SUCCESS, payload: userData });
@@ -64,6 +67,19 @@ const actAuth = (user, navigate) => {
           payload: error.response?.data?.content || "Đăng nhập thất bại!"
         });
       });
+  };
+};
+
+export const actLogout = (navigate) => {
+  if (localStorage.getItem("LOGIN_ADMIN")) {
+    localStorage.removeItem("LOGIN_ADMIN");
+    navigate("/auth", { replace: true });
+  } else if (localStorage.getItem("LOGIN_USER")) {
+    localStorage.removeItem("LOGIN_USER");
+    navigate("/", { replace: true });
+  }
+  return {
+    type: AUTH_CLEAR,
   };
 };
 
