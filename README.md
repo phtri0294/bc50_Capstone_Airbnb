@@ -2,6 +2,7 @@
 Admin Page + Home Page : Pham Huu Tri 
 Report URL: https://docs.google.com/spreadsheets/d/1Ye8npOfUcA3ueHFc0h52r98aoQEdNxgY_5Pw_Y0VmEs/edit?usp=sharing
 Deploy URL: https://bc50-capstone-airbnb.vercel.app/
+Deploy URL:bc50-capstone-airbnb-8v0ijl3ay-phtri0294s-projects.vercel.app
 
 
 # Getting Started with Create React App
