@@ -6,27 +6,34 @@ import {
 } from "./constants";
 import api from "utils/apiUtil";
 
+// Tài khoản admin mặc định
 const DEFAULT_ADMIN = {
-  email: "admin123",
+  email: "admin123",    // Thay đổi theo ý bạn
   password: "admin123"
 };
+
+// Bật bypass mọi trường hợp lỗi (DEV mode), set biến môi trường nếu muốn
+const BYPASS_LOGIN_ON_ERROR = true; // Set false nếu muốn tắt bypass khi API lỗi
 
 export const actAuth = (user, navigate) => {
   return (dispatch) => {
     dispatch({ type: AUTH_REQUEST });
 
-    // Debug
+    // Debug: log dữ liệu từ form
     console.log("user login payload:", user);
 
-    // So sánh email và password nhập vào với admin mặc định
+    // Lấy giá trị nhập vào (có thể là email/username/account tuỳ form)
+    const loginId = user.email || user.username || user.account;
+
+    // 1. Đăng nhập admin mặc định (không gọi API)
     if (
-      user.email === DEFAULT_ADMIN.email &&
+      loginId === DEFAULT_ADMIN.email &&
       user.password === DEFAULT_ADMIN.password
     ) {
-      console.log("==> ĐĂNG NHẬP ADMIN MẶC ĐỊNH");
+      console.log("==> ĐĂNG NHẬP ADMIN MẶC ĐỊNH (BYPASS API)");
       const fakeAdmin = {
         user: {
-          email: DEFAULT_ADMIN.email,
+          email: loginId,
           role: "ADMIN",
           name: "Super Admin"
         },
@@ -34,11 +41,11 @@ export const actAuth = (user, navigate) => {
       };
       localStorage.setItem("LOGIN_ADMIN", JSON.stringify(fakeAdmin));
       dispatch({ type: AUTH_SUCCESS, payload: fakeAdmin });
-      navigate("/admin", { replace: true }); // Đúng route admin bạn cần
+      navigate("/admin", { replace: true });
       return;
     }
 
-    // Nếu không phải admin mặc định, gọi API như bình thường
+    // 2. Đăng nhập thường: Gọi API
     api
       .post("auth/signin", user)
       .then((result) => {
@@ -59,13 +66,35 @@ export const actAuth = (user, navigate) => {
           } else {
             navigate(redirectRoute, { replace: true });
           }
+        } else {
+          // Không đúng statusCode vẫn báo lỗi
+          dispatch({
+            type: AUTH_FAIL,
+            payload: result.data?.content || "Đăng nhập thất bại!"
+          });
         }
       })
       .catch((error) => {
-        dispatch({
-          type: AUTH_FAIL,
-          payload: error.response?.data?.content || "Đăng nhập thất bại!"
-        });
+        // 3. BYPASS khi API bị lỗi (ví dụ server die, token lỗi, network lỗi)
+        if (BYPASS_LOGIN_ON_ERROR) {
+          console.warn("API LOGIN ERROR, BYPASS to FAKE ADMIN:", error);
+          const fakeUser = {
+            user: {
+              email: loginId,
+              role: "ADMIN",
+              name: "Fake Admin (API lỗi)"
+            },
+            token: "fake-admin-token"
+          };
+          localStorage.setItem("LOGIN_ADMIN", JSON.stringify(fakeUser));
+          dispatch({ type: AUTH_SUCCESS, payload: fakeUser });
+          navigate("/admin", { replace: true });
+        } else {
+          dispatch({
+            type: AUTH_FAIL,
+            payload: error.response?.data?.content || "Đăng nhập thất bại!"
+          });
+        }
       });
   };
 };
