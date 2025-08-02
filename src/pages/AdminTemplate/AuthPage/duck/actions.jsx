@@ -111,5 +111,3 @@ export const actLogout = (navigate) => {
     type: AUTH_CLEAR,
   };
 };
-
-export { actAuth };
