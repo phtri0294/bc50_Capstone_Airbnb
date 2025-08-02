@@ -6,9 +6,36 @@ import {
 } from "./constants";
 import api from "utils/apiUtil";
 
+const DEFAULT_ADMIN = {
+  id: "admin",
+  password: "admin123"
+};
+
 const actAuth = (user, navigate) => {
   return (dispatch) => {
     dispatch(actAuthRequest());
+
+    // 1. Check default admin account
+    if (
+      user.id === DEFAULT_ADMIN.id &&
+      user.password === DEFAULT_ADMIN.password
+    ) {
+      // Tạo user giả lập với quyền ADMIN
+      const fakeAdmin = {
+        user: {
+          id: DEFAULT_ADMIN.id,
+          role: "ADMIN",
+          name: "Super Admin"
+        },
+        token: "fake-admin-token"
+      };
+      localStorage.setItem("LOGIN_ADMIN", JSON.stringify(fakeAdmin));
+      navigate("/admin/User", { replace: true });
+      dispatch(actAuthSuccess(fakeAdmin));
+      return; // Dừng luôn, không gọi API nữa
+    }
+
+    // 2. Nếu không phải admin mặc định, gọi API như bình thường
     api
       .post("auth/signin", user)
       .then((result) => {
@@ -17,7 +44,7 @@ const actAuth = (user, navigate) => {
           const user = result.data.content;
           let localStorageKey = "LOGIN_USER";
           let redirectRoute = "/";
-          if (user.user.role === 'ADMIN') {
+          if (user.user.role === "ADMIN") {
             localStorageKey = "LOGIN_ADMIN";
             redirectRoute = "/admin/User";
           }
@@ -31,10 +58,10 @@ const actAuth = (user, navigate) => {
 
           localStorage.setItem(localStorageKey, JSON.stringify(user));
           dispatch(actAuthSuccess(user));
-        };
+        }
       })
       .catch((error) => {
-        dispatch(actAuthFail(error.response.data.content));
+        dispatch(actAuthFail(error.response?.data?.content || "Đăng nhập thất bại!"));
       });
   };
 };
