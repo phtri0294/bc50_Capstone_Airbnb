@@ -15,7 +15,7 @@ export const actAuth = (user, navigate) => {
   return (dispatch) => {
     dispatch({ type: AUTH_REQUEST });
 
-    // Debug xem user truyền lên từ form gồm gì
+    // Debug
     console.log("user login payload:", user);
 
     // So sánh email và password nhập vào với admin mặc định
